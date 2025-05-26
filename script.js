@@ -1,5 +1,5 @@
 function toBase12(n) {
-  const digits = "0123456789ΩΛ";
+  const digits = "0123456789ΦΛ";
   if (n === 0) return "00";
   let result = "";
   while (n > 0) {
