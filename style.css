@@ -1,0 +1,17 @@
+body {
+  background-color: black;
+  color: #0ABCD7;
+  font-family: 'Clear Sans', sans-serif;
+  text-align: center;
+  padding-top: 50px;
+}
+
+#clock {
+  font-size: 72px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+#date {
+  font-size: 48px;
+}
