@@ -9,10 +9,52 @@ function toBase12(n) {
   return result.padStart(2, 'θ');
 }
 
+// Gerçek 1071 yılından bu yana geçen yıl sayısını al, base12 çevir ve 6000 ekle
+function calculateCustomDate(now) {
+  const realYear = now.getFullYear();
+  const baseYearStart = 1071;
+  const yearsElapsed = realYear - baseYearStart;
+
+  // Base 12 olarak geçen yıl sayısı
+  const base12YearsElapsed = parseInt(toBase12(yearsElapsed), 12);
+
+  // Base 12'de 6000 + geçen yıl = görünmesi istenen yıl
+  const finalYearBase10 = base12YearsElapsed + parseInt("6000", 12);
+  const finalYearBase12 = toBase12(finalYearBase10);
+
+  // Ay ve gün hesaplama (20 Mart başlangıç)
+  const startDate = new Date(realYear, 2, 20); // Mart = 2
+  const daysSinceStart = Math.floor((now - startDate) / (1000 * 60 * 60 * 24)) + 1;
+
+  const month = Math.floor((daysSinceStart - 1) / 30) + 1;
+  const day = ((daysSinceStart - 1) % 30) + 1;
+
+  return `${toBase12(day)}-${toBase12(month)}-${finalYearBase12}`;
+}
+
+function updateTime() {
+  const now = new Date();
+  const startTime = new Date(now);
+  startTime.setHours(4, 30, 0, 0); // Her gün saat 04:30'da başlar
+  const elapsedSeconds = (now - startTime) / 1000 * 2;
+  const totalSeconds = Math.floor(elapsedSeconds);
+
+  const hours = Math.floor(totalSeconds / (120 * 120)) % 12;
+  const minutes = Math.floor((totalSeconds / 120) % 120);
+  const seconds = totalSeconds % 120;
+
+  document.getElementById('clock').textContent = `${toBase12(hours)}.${toBase12(minutes)}:${toBase12(seconds)}`;
+  document.getElementById('date').textContent = calculateCustomDate(now);
+}
+
+setInterval(updateTime, 500);
+updateTime();
+
 function calculateCustomDate(now) {
   const digits = "θ123456789ΦΛ";
 
-  function toBase12Local(n) {
+  // Base 12 çevirme fonksiyonu içinde tekrar tanımlı
+  function toBase12(n) {
     if (n === 0) return "θθ";
     let result = "";
     while (n > 0) {
@@ -26,19 +68,17 @@ function calculateCustomDate(now) {
   const realYear = now.getFullYear();
   const yearsElapsed = realYear - 1071;
 
-  // Base 12 karşılığı (676 gibi)
-  const base12YearsElapsed = parseInt(toBase12Local(yearsElapsed), 12);
+  // Base 12 olarak bu yıl farkını al
+  const base12YearsElapsed = parseInt(toBase12(yearsElapsed), 12);
 
-  // Base 12 sisteminde 6000 = 10368 (decimal)
-  const base12Offset = parseInt("6000", 12);
-
-  // Toplam yıl (decimal olarak)
+  // Base 12 olarak 6000 yıl ekle
+  const base12Offset = parseInt("6000", 12); // base 12’de 6000 = 10368 (base 10)
   const finalYearBase10 = base12YearsElapsed + base12Offset;
 
-  // Base 12 olarak göster
-  const finalYearBase12 = toBase12Local(finalYearBase10);
+  // Base 12 gösterimi
+  const finalYearBase12 = toBase12(finalYearBase10);
 
-  // Gün ve ay hesapla (20 Mart = yılbaşı)
+  // Ay ve gün hesapla (20 Mart = yılın 1. günü)
   const startDate = new Date(now.getFullYear(), 2, 20); // Mart = 2
   const daysSinceStart = Math.floor((now - startDate) / (1000 * 60 * 60 * 24)) + 1;
 
@@ -47,20 +87,3 @@ function calculateCustomDate(now) {
 
   return `${toBase12(day)}-${toBase12(month)}-${finalYearBase12}`;
 }
-
-function updateTime() {
-  const now = new Date();
-  const startTime = new Date(now);
-  startTime.setHours(4, 30, 0, 0);
-  const elapsedSeconds = (now - startTime) / 1000 * 2;
-  const totalSeconds = Math.floor(elapsedSeconds);
-  const hours = Math.floor(totalSeconds / (120 * 120)) % 12;
-  const minutes = Math.floor((totalSeconds / 120) % 120);
-  const seconds = totalSeconds % 120;
-
-  document.getElementById('clock').textContent = `${toBase12(hours)}.${toBase12(minutes)}:${toBase12(seconds)}`;
-  document.getElementById('date').textContent = calculateCustomDate(now);
-}
-
-setInterval(updateTime, 500);
-updateTime();
