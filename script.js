@@ -49,19 +49,3 @@ function updateTime() {
 
 setInterval(updateTime, 500);
 updateTime();
-
-function calculateCustomDate(now) {
-  const digits = "θ123456789ΦΛ";
-
-  // Base 12 çevirme fonksiyonu içinde tekrar tanımlı
-  function toBase12(n) {
-    if (n === 0) return "θθ";
-    let result = "";
-    while (n > 0) {
-      result = digits[n % 12] + result;
-      n = Math.floor(n / 12);
-    }
-    return result.padStart(2, 'θ');
-  }
-
-
