@@ -9,36 +9,21 @@ function toBase12(n) {
   return result.padStart(2, 'θ');
 }
 
-// Gerçek 1071 yılından bu yana geçen yıl sayısını al, base12 çevir ve 6000 ekle
 function calculateCustomDate(now) {
-  const realYear = now.getFullYear();
-  const baseYearStart = 1071;
-  const yearsElapsed = realYear - baseYearStart;
-
-  // Base 12 olarak geçen yıl sayısı
-  const base12YearsElapsed = parseInt(toBase12(yearsElapsed), 12);
-
-  // Base 12'de 6000 + geçen yıl = görünmesi istenen yıl
-  const finalYearBase10 = base12YearsElapsed + parseInt("6000", 12);
-  const finalYearBase12 = toBase12(finalYearBase10);
-
-  // Ay ve gün hesaplama (20 Mart başlangıç)
-  const startDate = new Date(realYear, 2, 20); // Mart = 2
+  const startDate = new Date(now.getFullYear(), 2, 20); // 20 Mart
   const daysSinceStart = Math.floor((now - startDate) / (1000 * 60 * 60 * 24)) + 1;
-
+  const baseYear = 6835 + Math.floor(daysSinceStart / 365);
   const month = Math.floor((daysSinceStart - 1) / 30) + 1;
   const day = ((daysSinceStart - 1) % 30) + 1;
-
-  return `${toBase12(day)}-${toBase12(month)}-${finalYearBase12}`;
+  return `${toBase12(day)}-${toBase12(month)}-${baseYear}`;
 }
 
 function updateTime() {
   const now = new Date();
   const startTime = new Date(now);
-  startTime.setHours(4, 30, 0, 0); // Her gün saat 04:30'da başlar
+  startTime.setHours(4, 30, 0, 0);
   const elapsedSeconds = (now - startTime) / 1000 * 2;
   const totalSeconds = Math.floor(elapsedSeconds);
-
   const hours = Math.floor(totalSeconds / (120 * 120)) % 12;
   const minutes = Math.floor((totalSeconds / 120) % 120);
   const seconds = totalSeconds % 120;
