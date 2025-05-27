@@ -12,6 +12,7 @@ function toBase12(n) {
 function calculateCustomDate(now) {
   // Miladi başlangıç tarihi: 20 Mart, gerçek 1071 yılı
   const baseYearMiladi = 1071;
+  const baseYearExtra = 6000; // Base12 olarak eklenecek yıl sayısı (onlukta değil)
 
   // 20 Mart bu yılın başlangıcı
   const startDate = new Date(now.getFullYear(), 2, 20); // Ay 0 tabanlı, 2 = Mart
@@ -21,44 +22,45 @@ function calculateCustomDate(now) {
     startDate.setFullYear(startDate.getFullYear() - 1);
   }
 
-  // Toplam geçen gün sayısı (20.03.1071'den bugüne)
-  const baseStartDate = new Date(1071, 2, 20);
-  const daysSinceBase = Math.floor((now - baseStartDate) / (1000 * 60 * 60 * 24)) + 1;
+  // Gün sayısı hesapla
+  const daysSinceStart = Math.floor((now - startDate) / (1000 * 60 * 60 * 24)) + 1;
 
-  // Yıl farkı (gerçek)
-  const totalYearsDecimal = Math.floor(daysSinceBase / 365) + 6 * 12 * 12 * 12; // 6000 base12 = 10368 decimal
+  // Yıl farkı (gün sayısına göre gerçek yıl farkı)
+  const realYearDiff = startDate.getFullYear() - baseYearMiladi;
 
-  // Gün yıl içindeki gün olarak hesapla
-  const dayOfYear = daysSinceBase % 365 || 365;
+  // Toplam yıl base12 olarak hesaplanacak:
+  // gerçek yıl farkı + 6000 (base12) - bunu base10'a çeviriyoruz:
+  // base12 6000 = 6 * 12^3 = 6 * 1728 = 10368 onluk yıl
+  const base12ExtraInDecimal = 6 * 12 * 12 * 12; // 10368
 
-  // Ay ve gün hesaplama
-  let month, day;
-  if (dayOfYear > 360) {
-    month = 13;
-    day = dayOfYear - 360;
-  } else {
-    month = Math.floor((dayOfYear - 1) / 30) + 1;
-    day = ((dayOfYear - 1) % 30) + 1;
-  }
+  const totalYearsDecimal = realYearDiff + base12ExtraInDecimal + Math.floor(daysSinceStart / 365);
 
-  return `${toBase12(day)}.${toBase12(month)}.${toBase12(totalYearsDecimal)}`;
+  // totalYearsDecimal'i base12'ye çeviriyoruz
+  const base12Year = toBase12(totalYearsDecimal);
+
+  // Ay ve gün hesaplama (normal 30 günlük aylar olarak)
+  const month = Math.floor((daysSinceStart - 1) / 30) + 1;
+  const day = ((daysSinceStart - 1) % 30) + 1;
+
+  return `${toBase12(day)}.${toBase12(month)}.${base12Year}`;
 }
 
 function updateTime() {
   const now = new Date();
-  const startTime = new Date(now);
-  startTime.setHours(4, 30, 0, 0);
 
-  // Eğer şimdi 04:30'dan önceyse, saat başlangıcını bir gün öncesine al
-  if (now < startTime) {
-    startTime.setDate(startTime.getDate() - 1);
+  // Saat 04:30 bugünün başlangıcı olacak
+  const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 4, 30, 0, 0);
+
+  // Eğer henüz 04:30 olmadıysa, başlangıç dünkü 04:30 olmalı
+  if (now < todayStart) {
+    todayStart.setDate(todayStart.getDate() - 1);
   }
 
-  // Geçen saniyeyi hesapla, hız 2x
-  const elapsedSeconds = ((now - startTime) / 1000) * 2;
+  // Geçen saniyeyi hesapla (2x hız)
+  const elapsedSeconds = ((now - todayStart) / 1000) * 2;
   const totalSeconds = Math.floor(elapsedSeconds);
 
-  // Saat sistemi: 12 tabanlı saat, 120 tabanlı dakika ve saniye
+  // Özel saat sistemi: 12 saat, 120 dakika, 120 saniye
   const hours = Math.floor(totalSeconds / (120 * 120)) % 12;
   const minutes = Math.floor((totalSeconds / 120) % 120);
   const seconds = totalSeconds % 120;
