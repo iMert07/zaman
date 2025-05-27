@@ -14,10 +14,10 @@ function calculateCustomDate(now) {
   const baseYearMiladi = 1071;
   const baseYearExtra = 6000; // Base12 olarak eklenecek yıl sayısı (onlukta değil)
 
-  // 20 Mart bu yılın başlangıcı
+  // 21 Mart bu yılın başlangıcı
   const startDate = new Date(now.getFullYear(), 2, 21); // Ay 0 tabanlı, 2 = Mart
 
-  // Eğer bugünün tarihi 20 Mart'tan önceyse, başlangıcı bir önceki yıla al
+  // Eğer bugünün tarihi 21 Mart'tan önceyse, başlangıcı bir önceki yıla al
   if (now < startDate) {
     startDate.setFullYear(startDate.getFullYear() - 1);
   }
