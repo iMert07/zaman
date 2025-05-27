@@ -10,45 +10,48 @@ function toBase12(n) {
 }
 
 function calculateCustomDate(now) {
-  const origin = new Date("1071-03-20T00:00:00Z"); // Gerçek başlangıç tarihi
-  const msInDay = 1000 * 60 * 60 * 24;
-  const daysPassed = Math.floor((now - origin) / msInDay);
+  // Gerçek 20 Mart yılbaşı
+  const realYear = now.getFullYear();
+  const startDate = new Date(realYear, 2, 20); // Mart = 2
 
-  const yearsPassed = Math.floor(daysPassed / 360); // Her yıl 360 gün
-  const base12Offset = parseInt("6000", 12); // Base12: 6000 yıl
-  const totalBase12Years = yearsPassed + base12Offset;
-  const finalYear = toBase12(totalBase12Years);
+  // Eğer bugün 20 Mart'tan önceyse, bir önceki yılı baz al
+  if (now < startDate) {
+    startDate.setFullYear(realYear - 1);
+  }
 
-  const dayOfYear = daysPassed % 360;
-  const month = Math.floor(dayOfYear / 30) + 1;
-  const day = (dayOfYear % 30) + 1;
+  const daysSinceStart = Math.floor((now - startDate) / (1000 * 60 * 60 * 24));
 
-  return `${toBase12(day)}-${toBase12(month)}-${finalYear}`;
+  // Gün ve ay hesaplama (her ay = 30 gün)
+  const month = Math.floor(daysSinceStart / 30) + 1;
+  const day = (daysSinceStart % 30) + 1;
+
+  // Yıl hesaplama
+  const yearsPassed = now.getFullYear() - 1071;
+  const base12Years = parseInt(yearsPassed.toString(), 10);
+  const base12Number = toBase12(base12Years);
+  const customYear = toBase12(6000 + parseInt(base12Number, 12));
+
+  return `${toBase12(day)}-${toBase12(month)}-${customYear}`;
 }
 
 function updateTime() {
   const now = new Date();
-
-  // Gün 04:30'da başlar
   const startTime = new Date(now);
   startTime.setHours(4, 30, 0, 0);
 
-  let elapsedSeconds;
-  if (now >= startTime) {
-    elapsedSeconds = (now - startTime) / 1000;
-  } else {
-    // Erken saatlerde, bir önceki günün 04:30'una göre hesapla
-    const yesterday = new Date(startTime);
-    yesterday.setDate(startTime.getDate() - 1);
-    elapsedSeconds = (now - yesterday) / 1000;
-  }
+  // Saat başlangıcından geçen süre
+  let elapsedSeconds = (now - startTime) / 1000;
+  if (elapsedSeconds < 0) elapsedSeconds += 24 * 60 * 60; // Dünkü 04:30'u kullan
 
-  const totalSeconds = Math.floor(elapsedSeconds * 2); // 1 saniye = 2 birim
+  const scaledSeconds = elapsedSeconds * 2; // Zaman hızlandırma
+  const totalSeconds = Math.floor(scaledSeconds);
+
   const hours = Math.floor(totalSeconds / (120 * 120)) % 12;
   const minutes = Math.floor((totalSeconds / 120) % 120);
   const seconds = totalSeconds % 120;
 
-  document.getElementById('clock').textContent = `${toBase12(hours)}.${toBase12(minutes)}:${toBase12(seconds)}`;
+  document.getElementById('clock').textContent =
+    `${toBase12(hours)}.${toBase12(minutes)}:${toBase12(seconds)}`;
   document.getElementById('date').textContent = calculateCustomDate(now);
 }
 
