@@ -43,7 +43,7 @@ function calculateCustomDate(now) {
   const month = Math.floor((daysSinceStart - 1) / 30) + 1;
   const day = ((daysSinceStart - 1) % 30) + 1;
 
-  return `${toBase12(day)}-${toBase12(month)}-${base12Year}`;
+  return `${toBase12(day)}.${toBase12(month)}.${base12Year}`;
 }
 
 function updateTime() {
@@ -65,7 +65,7 @@ function updateTime() {
   const minutes = Math.floor((totalSeconds / 120) % 120);
   const seconds = totalSeconds % 120;
 
-  document.getElementById('clock').textContent = `${toBase12(hours)}.${toBase12(minutes)}:${toBase12(seconds)}`;
+  document.getElementById('clock').textContent = `${toBase12(hours)}.${toBase12(minutes)}.${toBase12(seconds)}`;
   document.getElementById('date').textContent = calculateCustomDate(now);
 }
 
