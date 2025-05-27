@@ -2,11 +2,43 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <title>Sayac</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Özel Saat ve Takvim</title>
+  <style>
+    body {
+      margin: 0;
+      background: #000;
+      color: #0ff;
+      font-family: "Segoe UI", sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    #clock {
+      font-size: 10vw;
+      margin-bottom: 2vh;
+    }
+
+    #date {
+      font-size: 6vw;
+    }
+
+    @media (max-width: 600px) {
+      #clock {
+        font-size: 14vw;
+      }
+      #date {
+        font-size: 8vw;
+      }
+    }
+  </style>
 </head>
 <body>
-  <div id="clock" style="font-size: 2em; font-family: monospace;"></div>
-  <div id="date" style="font-size: 1.5em; font-family: monospace; margin-top: 10px;"></div>
+  <div id="clock">yükleniyor...</div>
+  <div id="date">tarih bekleniyor...</div>
 
   <script>
     function toBase12(n) {
@@ -21,50 +53,45 @@
     }
 
     function calculateCustomDate(now) {
-      const startDate = new Date(now.getFullYear(), 2, 20); // 20 Mart
-      const daysSinceStart = Math.floor((now - startDate) / (1000 * 60 * 60 * 24)) + 1;
+      const MILADI_BASLANGIC_YILI = 1071;
+      const BASE12_OFFSET = 6000;
 
-      // Milat 1071 yılı (base 10)
-      const baseMilad = 1071;
+      const realYear = now.getFullYear();
+      const realMonth = now.getMonth();
+      const realDate = now.getDate();
+      const startOfThisYear = new Date(realYear, 2, 20); // 20 Mart
 
-      // Geçen tam yıl sayısı (base 10)
-      const yearsPassed = now.getFullYear() - baseMilad;
-
-      // Geçen yıl sayısını base12'ye çevir
-      let yearsBase12 = 0;
-      let temp = yearsPassed;
-      let place = 1;
-      while (temp > 0) {
-        yearsBase12 += (temp % 12) * place;
-        temp = Math.floor(temp / 12);
-        place *= 10;
+      // Eğer bugün 20 Mart'tan önceyse, bir önceki yılın 20 Mart'ını al
+      let baseStart = new Date(realYear, 2, 20);
+      if (now < baseStart) {
+        baseStart = new Date(realYear - 1, 2, 20);
       }
 
-      // Base12'de 6000 yıl eklemek için (onluk tabanda 6*12^3 = 10368)
-      // Bu sayede yıl değeri 6000(base12) + geçen yıl sayısı (base12) olacak.
-      const offset = 6000;
+      const totalDaysSince1071 = Math.floor((now - new Date(1071, 2, 20)) / (1000 * 60 * 60 * 24));
+      const base12Years = Math.floor(totalDaysSince1071 / 365.25);
+      const finalYear = base12Years + BASE12_OFFSET;
 
-      // Toplam yılı base10 olarak hesapla:
-      const totalYear = offset + yearsBase12;
+      const daysSinceYearStart = Math.floor((now - baseStart) / (1000 * 60 * 60 * 24));
+      const month = Math.floor(daysSinceYearStart / 30) + 1;
+      const day = (daysSinceYearStart % 30) + 1;
 
-      // Ay ve gün base12 formatında
-      const month = Math.floor((daysSinceStart - 1) / 30) + 1;
-      const day = ((daysSinceStart - 1) % 30) + 1;
-
-      return `${toBase12(day)}-${toBase12(month)}-${totalYear}`;
+      return `${toBase12(day)}-${toBase12(month)}-${finalYear}`;
     }
 
     function updateTime() {
       const now = new Date();
       const startTime = new Date(now);
       startTime.setHours(4, 30, 0, 0);
+      if (now < startTime) startTime.setDate(startTime.getDate() - 1);
+
       const elapsedSeconds = (now - startTime) / 1000 * 2;
       const totalSeconds = Math.floor(elapsedSeconds);
       const hours = Math.floor(totalSeconds / (120 * 120)) % 12;
       const minutes = Math.floor((totalSeconds / 120) % 120);
       const seconds = totalSeconds % 120;
 
-      document.getElementById('clock').textContent = `${toBase12(hours)}.${toBase12(minutes)}:${toBase12(seconds)}`;
+      document.getElementById('clock').textContent =
+        `${toBase12(hours)}.${toBase12(minutes)}:${toBase12(seconds)}`;
       document.getElementById('date').textContent = calculateCustomDate(now);
     }
 
