@@ -10,26 +10,25 @@ function toBase12(n) {
 }
 
 function calculateCustomDate(now) {
-  // Başlangıç tarihi 20 Mart 1071
   const baseYearStart = 1071;
-  const startDate = new Date(baseYearStart, 2, 20); // Ay: 2 => Mart (0 bazlı)
+  const startDate = new Date(baseYearStart, 2, 20); // 20 Mart 1071
   const diffMillis = now - startDate;
   const daysSinceStart = Math.floor(diffMillis / (1000 * 60 * 60 * 24)) + 1;
 
-  // Ay ve gün hesaplaması (30 günlük ay, 365 günlük yıl varsayımı)
+  // Ay ve gün hesabı (30 gün ay, 365 gün yıl varsayımı)
   const month = Math.floor((daysSinceStart - 1) / 30) + 1;
   const day = ((daysSinceStart - 1) % 30) + 1;
 
-  // Geçen gerçek yıl sayısı
+  // Gerçek yıl farkı
   const realYearDiff = now.getFullYear() - baseYearStart;
 
-  // 6000 base12 yılın decimal karşılığı: 6*12^3 = 6*1728=10368
-  const base12_6000_decimal = 10368;
+  // 6000 base12'nin ondalık karşılığı
+  const base12_6000_decimal = 6 * (12 ** 3); // 6 * 1728 = 10368
 
-  // Toplam yıl decimal olarak:
+  // Toplam yıl (ondalık)
   const totalYearDecimal = realYearDiff + base12_6000_decimal;
 
-  // Toplam yıl base12'ye çevriliyor:
+  // Yılı base12 formatına çevir
   const yearBase12 = toBase12(totalYearDecimal);
 
   return `${toBase12(day)}-${toBase12(month)}-${yearBase12}`;
@@ -40,7 +39,7 @@ function updateTime() {
   const startTime = new Date(now);
   startTime.setHours(4, 30, 0, 0);
 
-  // Zaman hızlandırılmış (2x)
+  // Zamanı hızlandır (2x)
   const elapsedSeconds = (now - startTime) / 1000 * 2;
   const totalSeconds = Math.floor(elapsedSeconds);
 
