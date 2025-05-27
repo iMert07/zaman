@@ -13,7 +13,7 @@ function calculateCustomDate(now) {
   // Miladi başlangıç tarihi: 20 Mart, gerçek 1071 yılı
   const baseYearMiladi = 1071;
   const baseYearExtra = 6000; // Base12 olarak eklenecek yıl sayısı (onlukta değil)
-  
+
   // 20 Mart bu yılın başlangıcı
   const startDate = new Date(now.getFullYear(), 2, 20); // Ay 0 tabanlı, 2 = Mart
 
@@ -31,7 +31,6 @@ function calculateCustomDate(now) {
   // Toplam yıl base12 olarak hesaplanacak:
   // gerçek yıl farkı + 6000 (base12) - bunu base10'a çeviriyoruz:
   // base12 6000 = 6 * 12^3 = 6 * 1728 = 10368 onluk yıl
-
   const base12ExtraInDecimal = 6 * 12 * 12 * 12; // 10368
 
   const totalYearsDecimal = realYearDiff + base12ExtraInDecimal + Math.floor(daysSinceStart / 365);
@@ -48,19 +47,20 @@ function calculateCustomDate(now) {
 
 function updateTime() {
   const now = new Date();
-  const startTime = new Date(now);
-  startTime.setHours(4, 30, 0, 0);
 
-  // Eğer şimdi 04:30'dan önceyse, saat başlangıcını bir gün öncesine al
-  if (now < startTime) {
-    startTime.setDate(startTime.getDate() - 1);
+  // Saat 04:30 bugünün başlangıcı olacak
+  const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 4, 30, 0, 0);
+
+  // Eğer henüz 04:30 olmadıysa, başlangıç dünkü 04:30 olmalı
+  if (now < todayStart) {
+    todayStart.setDate(todayStart.getDate() - 1);
   }
 
-  // Geçen saniyeyi hesapla, hız 2x
-  const elapsedSeconds = ((now - startTime) / 1000) * 2;
+  // Geçen saniyeyi hesapla (2x hız)
+  const elapsedSeconds = ((now - todayStart) / 1000) * 2;
   const totalSeconds = Math.floor(elapsedSeconds);
 
-  // Saat sistemi: 12 tabanlı saat, 120 tabanlı dakika ve saniye
+  // Özel saat sistemi: 12 saat, 120 dakika, 120 saniye
   const hours = Math.floor(totalSeconds / (120 * 120)) % 12;
   const minutes = Math.floor((totalSeconds / 120) % 120);
   const seconds = totalSeconds % 120;
