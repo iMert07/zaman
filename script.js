@@ -17,18 +17,17 @@ function fromBase12(str) {
 function calculateCustomDate(now) {
   const referenceYear = 1071;
   const referenceDate = new Date(referenceYear, 2, 20); // 20 Mart 1071
-  const daysSinceStart = Math.floor((now - referenceDate) / (1000 * 60 * 60 * 24));
-  const yearPassedDecimal = Math.floor(daysSinceStart / 365);
+  const totalDays = Math.floor((now - referenceDate) / (1000 * 60 * 60 * 24));
 
-  // base12 fark: örneğin 954 → '676'
+  const yearPassedDecimal = Math.floor(totalDays / 360); // 1 yıl = 360 gün
   const base12Year = toBase12(yearPassedDecimal);
 
-  // base12 olarak 6000 ekle
   const base12Offset = fromBase12("6θθθ"); // 6000 base12
   const finalYear = toBase12(fromBase12(base12Year) + base12Offset);
 
-  const month = Math.floor((daysSinceStart % 365) / 30) + 1;
-  const day = ((daysSinceStart % 365) % 30) + 1;
+  const remainingDays = totalDays % 360;
+  const month = Math.floor(remainingDays / 30) + 1;
+  const day = (remainingDays % 30) + 1;
 
   return `${toBase12(day)}-${toBase12(month)}-${finalYear}`;
 }
