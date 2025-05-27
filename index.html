@@ -1,102 +1,16 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Özel Saat ve Takvim</title>
-  <style>
-    body {
-      margin: 0;
-      background: #000;
-      color: #0ff;
-      font-family: "Segoe UI", sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-    }
-
-    #clock {
-      font-size: 10vw;
-      margin-bottom: 2vh;
-    }
-
-    #date {
-      font-size: 6vw;
-    }
-
-    @media (max-width: 600px) {
-      #clock {
-        font-size: 14vw;
-      }
-      #date {
-        font-size: 8vw;
-      }
-    }
-  </style>
+  <meta charset="UTF-8">
+  <title>Anatolya Sayacı</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="clock">yükleniyor...</div>
-  <div id="date">tarih bekleniyor...</div>
-
-  <script>
-    function toBase12(n) {
-      const digits = "θ123456789ΦΛ";
-      if (n === 0) return "θθ";
-      let result = "";
-      while (n > 0) {
-        result = digits[n % 12] + result;
-        n = Math.floor(n / 12);
-      }
-      return result.padStart(2, 'θ');
-    }
-
-    function calculateCustomDate(now) {
-      const MILADI_BASLANGIC_YILI = 1071;
-      const BASE12_OFFSET = 6000;
-
-      const realYear = now.getFullYear();
-      const realMonth = now.getMonth();
-      const realDate = now.getDate();
-      const startOfThisYear = new Date(realYear, 2, 20); // 20 Mart
-
-      // Eğer bugün 20 Mart'tan önceyse, bir önceki yılın 20 Mart'ını al
-      let baseStart = new Date(realYear, 2, 20);
-      if (now < baseStart) {
-        baseStart = new Date(realYear - 1, 2, 20);
-      }
-
-      const totalDaysSince1071 = Math.floor((now - new Date(1071, 2, 20)) / (1000 * 60 * 60 * 24));
-      const base12Years = Math.floor(totalDaysSince1071 / 365.25);
-      const finalYear = base12Years + BASE12_OFFSET;
-
-      const daysSinceYearStart = Math.floor((now - baseStart) / (1000 * 60 * 60 * 24));
-      const month = Math.floor(daysSinceYearStart / 30) + 1;
-      const day = (daysSinceYearStart % 30) + 1;
-
-      return `${toBase12(day)}-${toBase12(month)}-${finalYear}`;
-    }
-
-    function updateTime() {
-      const now = new Date();
-      const startTime = new Date(now);
-      startTime.setHours(4, 30, 0, 0);
-      if (now < startTime) startTime.setDate(startTime.getDate() - 1);
-
-      const elapsedSeconds = (now - startTime) / 1000 * 2;
-      const totalSeconds = Math.floor(elapsedSeconds);
-      const hours = Math.floor(totalSeconds / (120 * 120)) % 12;
-      const minutes = Math.floor((totalSeconds / 120) % 120);
-      const seconds = totalSeconds % 120;
-
-      document.getElementById('clock').textContent =
-        `${toBase12(hours)}.${toBase12(minutes)}:${toBase12(seconds)}`;
-      document.getElementById('date').textContent = calculateCustomDate(now);
-    }
-
-    setInterval(updateTime, 500);
-    updateTime();
-  </script>
+  <div class="container">
+    <h1>Anatolya Sayacı</h1>
+    <div id="clock">00.00:00</div>
+    <div id="date">00-00-0000</div>
+  </div>
+  <script src="script.js"></script>
 </body>
 </html>
