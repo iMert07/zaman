@@ -10,28 +10,21 @@ function toBase12(n) {
 }
 
 function calculateCustomDate(now) {
-  // Gerçek 20 Mart yılbaşı
-  const realYear = now.getFullYear();
-  const startDate = new Date(realYear, 2, 20); // Mart = 2
+  const baseYearStart = 1071;
+  const startDate = new Date(baseYearStart, 2, 20); // 20 Mart 1071
+  const diffMillis = now - startDate;
+  const daysSinceStart = Math.floor(diffMillis / (1000 * 60 * 60 * 24)) + 1;
 
-  // Eğer bugün 20 Mart'tan önceyse, bir önceki yılı baz al
-  if (now < startDate) {
-    startDate.setFullYear(realYear - 1);
-  }
+  const month = Math.floor((daysSinceStart - 1) / 30) + 1;
+  const day = ((daysSinceStart - 1) % 30) + 1;
 
-  const daysSinceStart = Math.floor((now - startDate) / (1000 * 60 * 60 * 24));
+  const realYearDiff = now.getFullYear() - baseYearStart;
+  const base12_6000_decimal = 6 * 1728; // 6000 base12'nin decimal karşılığı (6*12^3 = 10368)
+  const totalYearDecimal = realYearDiff + base12_6000_decimal;
 
-  // Gün ve ay hesaplama (her ay = 30 gün)
-  const month = Math.floor(daysSinceStart / 30) + 1;
-  const day = (daysSinceStart % 30) + 1;
+  const yearBase12 = toBase12(totalYearDecimal);
 
-  // Yıl hesaplama
-  const yearsPassed = now.getFullYear() - 1071;
-  const base12Years = parseInt(yearsPassed.toString(), 10);
-  const base12Number = toBase12(base12Years);
-  const customYear = toBase12(6000 + parseInt(base12Number, 12));
-
-  return `${toBase12(day)}-${toBase12(month)}-${customYear}`;
+  return `${toBase12(day)}-${toBase12(month)}-${yearBase12}`;
 }
 
 function updateTime() {
@@ -39,19 +32,15 @@ function updateTime() {
   const startTime = new Date(now);
   startTime.setHours(4, 30, 0, 0);
 
-  // Saat başlangıcından geçen süre
-  let elapsedSeconds = (now - startTime) / 1000;
-  if (elapsedSeconds < 0) elapsedSeconds += 24 * 60 * 60; // Dünkü 04:30'u kullan
-
-  const scaledSeconds = elapsedSeconds * 2; // Zaman hızlandırma
-  const totalSeconds = Math.floor(scaledSeconds);
+  // Geçen süreyi 2 ile çarpıyoruz, base12 özel zaman için
+  const elapsedSeconds = (now - startTime) / 1000 * 2;
+  const totalSeconds = Math.floor(elapsedSeconds);
 
   const hours = Math.floor(totalSeconds / (120 * 120)) % 12;
   const minutes = Math.floor((totalSeconds / 120) % 120);
   const seconds = totalSeconds % 120;
 
-  document.getElementById('clock').textContent =
-    `${toBase12(hours)}.${toBase12(minutes)}:${toBase12(seconds)}`;
+  document.getElementById('clock').textContent = `${toBase12(hours)}.${toBase12(minutes)}:${toBase12(seconds)}`;
   document.getElementById('date').textContent = calculateCustomDate(now);
 }
 
