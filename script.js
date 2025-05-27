@@ -9,19 +9,38 @@ function toBase12(n) {
   return result.padStart(2, 'θ');
 }
 
+function fromBase12(str) {
+  const digits = "θ123456789ΦΛ";
+  return str.split('').reduce((acc, digit) => acc * 12 + digits.indexOf(digit), 0);
+}
+
 function calculateCustomDate(now) {
-  const startDate = new Date(now.getFullYear(), 2, 20); // 20 Mart
-  const daysSinceStart = Math.floor((now - startDate) / (1000 * 60 * 60 * 24)) + 1;
-  const baseYear = 6835 + Math.floor(daysSinceStart / 365);
-  const month = Math.floor((daysSinceStart - 1) / 30) + 1;
-  const day = ((daysSinceStart - 1) % 30) + 1;
-  return `${toBase12(day)}-${toBase12(month)}-${baseYear}`;
+  const referenceYear = 1071;
+  const referenceDate = new Date(referenceYear, 2, 20); // 20 Mart 1071
+  const daysSinceStart = Math.floor((now - referenceDate) / (1000 * 60 * 60 * 24));
+  const yearPassedDecimal = Math.floor(daysSinceStart / 365);
+
+  // base12 fark: örneğin 954 → '676'
+  const base12Year = toBase12(yearPassedDecimal);
+
+  // base12 olarak 6000 ekle
+  const base12Offset = fromBase12("6θθθ"); // 6000 base12
+  const finalYear = toBase12(fromBase12(base12Year) + base12Offset);
+
+  const month = Math.floor((daysSinceStart % 365) / 30) + 1;
+  const day = ((daysSinceStart % 365) % 30) + 1;
+
+  return `${toBase12(day)}-${toBase12(month)}-${finalYear}`;
 }
 
 function updateTime() {
   const now = new Date();
   const startTime = new Date(now);
   startTime.setHours(4, 30, 0, 0);
+  if (now < startTime) {
+    startTime.setDate(startTime.getDate() - 1);
+  }
+
   const elapsedSeconds = (now - startTime) / 1000 * 2;
   const totalSeconds = Math.floor(elapsedSeconds);
   const hours = Math.floor(totalSeconds / (120 * 120)) % 12;
