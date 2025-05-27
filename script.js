@@ -20,11 +20,9 @@ function countExtraWeeks(years) {
 }
 
 function calculateCustomDate(now) {
-  const gregBase = new Date(1071, 2, 21); // 21 Mart 1071 (Aylar 0-indexli)
+  const gregBase = new Date(1071, 2, 21); // 21 Mart 1071
   const daysPassed = Math.floor((now - gregBase) / (1000 * 60 * 60 * 24));
 
-  // Her yıl 365 gün, bazı yıllarda +5 gün
-  // Yıl sayısını yaklaşık tahmin edip düzeltmeli bulacağız
   let estimatedYear = Math.floor(daysPassed / 365);
   let totalDays = estimatedYear * 365 + countExtraWeeks(estimatedYear);
 
@@ -47,7 +45,10 @@ function calculateCustomDate(now) {
   const month = Math.floor(dayOfYear / 30) + 1;
   const day = (dayOfYear % 30) + 1;
 
-  return `${toBase12(day)}.${toBase12(month)}.${toBase12(estimatedYear + 1)}`;
+  // Base12 olarak 6000 yıl ekle (görsel amaçlı), ama zamana dahil etme
+  const yearToDisplay = estimatedYear + 1 + (6 * 12 * 12 * 12); // +6000 base12 = 10368
+
+  return `${toBase12(day)}.${toBase12(month)}.${toBase12(yearToDisplay)}`;
 }
 
 function updateTime() {
@@ -59,7 +60,6 @@ function updateTime() {
     todayStart.setDate(todayStart.getDate() - 1);
   }
 
-  // 2 kat hızda geçen zaman
   const elapsedSeconds = ((now - todayStart) / 1000) * 2;
   const totalSeconds = Math.floor(elapsedSeconds);
 
