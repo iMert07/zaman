@@ -8,159 +8,163 @@
   body {
     font-family: monospace, monospace;
     background: #121212;
-    color: #00d8d6;
+    color: #0ff;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     height: 100vh;
     margin: 0;
-    padding: 20px;
   }
-  h1 {
-    margin-bottom: 30px;
-  }
-  .clock, .date, .decimalClock, .decimalDate {
-    background: #222;
-    padding: 15px 25px;
-    border-radius: 8px;
-    margin: 10px 0;
-    min-width: 180px;
+  .container {
     text-align: center;
   }
+  h1 {
+    margin-bottom: 1em;
+  }
+  .clock, .date, .clock-decimal, .date-decimal {
+    margin: 0.5em 0;
+    font-size: 2em;
+  }
   .label {
-    font-size: 0.85rem;
-    color: #555;
-    margin-bottom: 6px;
+    color: #0a8;
+    font-size: 1em;
+    margin-bottom: 0.3em;
   }
   .value {
-    font-size: 2rem;
-    letter-spacing: 0.15em;
+    background: #003333;
+    padding: 0.3em 0.6em;
+    border-radius: 5px;
+    display: inline-block;
+    min-width: 9ch;
+    letter-spacing: 0.1em;
   }
 </style>
 </head>
 <body>
+  <div class="container">
+    <h1>Anatolya Sayacı</h1>
 
-<h1>Anatolya Sayacı</h1>
+    <div class="label">Özel Saat (Base12)</div>
+    <div id="clock" class="clock value">θθ.θθ.θθθ</div>
 
-<div class="clock">
-  <div class="label">Base12 Saat</div>
-  <div id="clock" class="value">θθ.θθθ.θθθ</div>
-</div>
-<div class="date">
-  <div class="label">Base12 Tarih</div>
-  <div id="date" class="value">θθ.θθ.θθθθ</div>
-</div>
+    <div class="label">Özel Tarih (Base12)</div>
+    <div id="date" class="date value">θθ.θθ.θθθθθ</div>
 
-<div class="decimalClock">
-  <div class="label">Onluk Saat</div>
-  <div id="clockDecimal" class="value">00.000.000</div>
-</div>
-<div class="decimalDate">
-  <div class="label">Onluk Tarih</div>
-  <div id="dateDecimal" class="value">00.00.0000</div>
-</div>
+    <div class="label" style="margin-top:2em;">Gerçek Saat (Onluk)</div>
+    <div id="clockDecimal" class="clock-decimal value">00.000.000</div>
 
-<script>
-function toBase12(n) {
-  const digits = "θ123456789ΦΛ";
-  if (n === 0) return "θθ";
-  let result = "";
-  while (n > 0) {
-    result = digits[n % 12] + result;
-    n = Math.floor(n / 12);
-  }
-  return result.padStart(2, 'θ');
-}
+    <div class="label">Gerçek Tarih (Onluk)</div>
+    <div id="dateDecimal" class="date-decimal value">00.00.00000</div>
+  </div>
 
-function countExtraWeeks(years) {
-  let extra = 0;
-  for (let i = 1; i <= years; i++) {
-    if (i % 20 === 0 && i % 640 !== 0) {
-      extra += 5;
+  <script>
+    function toBase12(n) {
+      const digits = "θ123456789ΦΛ";
+      if (n === 0) return "θθ";
+      let result = "";
+      while (n > 0) {
+        result = digits[n % 12] + result;
+        n = Math.floor(n / 12);
+      }
+      return result.padStart(2, 'θ');
     }
-  }
-  return extra;
-}
 
-function calculateCustomDate(now) {
-  const gregBase = new Date(1071, 2, 21); // 21 Mart 1071
-  const daysPassed = Math.floor((now - gregBase) / (1000 * 60 * 60 * 24));
-
-  let estimatedYear = Math.floor(daysPassed / 365);
-  let totalDays = estimatedYear * 365 + countExtraWeeks(estimatedYear);
-
-  while (totalDays > daysPassed) {
-    estimatedYear--;
-    totalDays = estimatedYear * 365 + countExtraWeeks(estimatedYear);
-  }
-
-  while (totalDays + (estimatedYear + 1) * 0 < daysPassed) {
-    estimatedYear++;
-    totalDays = estimatedYear * 365 + countExtraWeeks(estimatedYear);
-    if (totalDays > daysPassed) {
-      estimatedYear--;
-      totalDays = estimatedYear * 365 + countExtraWeeks(estimatedYear);
-      break;
+    function countExtraWeeks(years) {
+      let extra = 0;
+      for (let i = 1; i <= years; i++) {
+        if (i % 20 === 0 && i % 640 !== 0) {
+          extra += 5;
+        }
+      }
+      return extra;
     }
-  }
 
-  const dayOfYear = daysPassed - totalDays;
-  const month = Math.floor(dayOfYear / 30) + 1;
-  const day = (dayOfYear % 30) + 1;
+    function calculateCustomDate(now) {
+      const gregBase = new Date(1071, 2, 21); // 21 Mart 1071, aylar 0-indexli
+      const daysPassed = Math.floor((now - gregBase) / (1000 * 60 * 60 * 24));
 
-  // Base12 olarak 6000 yıl ekle (görsel amaçlı), ama zamana dahil etme
-  const yearToDisplay = estimatedYear + 1 + (6 * 12 * 12 * 12); // +6000 base12 = 10368
+      let estimatedYear = Math.floor(daysPassed / 365);
+      let totalDays = estimatedYear * 365 + countExtraWeeks(estimatedYear);
 
-  return {
-    base12: `${toBase12(day)}.${toBase12(month)}.${toBase12(yearToDisplay)}`,
-    decimal: {
-      day: day.toString().padStart(2, '0'),
-      month: month.toString().padStart(2, '0'),
-      year: (estimatedYear + 1).toString().padStart(4, '0'),
+      while (totalDays > daysPassed) {
+        estimatedYear--;
+        totalDays = estimatedYear * 365 + countExtraWeeks(estimatedYear);
+      }
+      while (totalDays + (estimatedYear + 1) * 0 < daysPassed) {
+        estimatedYear++;
+        totalDays = estimatedYear * 365 + countExtraWeeks(estimatedYear);
+        if (totalDays > daysPassed) {
+          estimatedYear--;
+          totalDays = estimatedYear * 365 + countExtraWeeks(estimatedYear);
+          break;
+        }
+      }
+
+      const dayOfYear = daysPassed - totalDays;
+      const month = Math.floor(dayOfYear / 30) + 1;
+      const day = (dayOfYear % 30) + 1;
+
+      // Görsel amaçlı 6000 yıl base12 olarak ekleme (6000 base12 = 6*12^3=10368 decimal)
+      const base12YearToDisplay = estimatedYear + 1 + (6 * 12 * 12 * 12); // 6000 base12
+
+      // Onluk yıl tam sayı olarak gösterilecek (base12 farkını dahil etmiyoruz, ama istersen ekle)
+      const decimalYearToDisplay = estimatedYear + 1;
+
+      return {
+        base12: {
+          day: toBase12(day),
+          month: toBase12(month),
+          year: toBase12(base12YearToDisplay)
+        },
+        decimal: {
+          day: day.toString().padStart(2, '0'),
+          month: month.toString().padStart(2, '0'),
+          year: decimalYearToDisplay.toString().padStart(5, '0')
+        }
+      };
     }
-  };
-}
 
-function updateTime() {
-  const now = new Date();
+    function updateTime() {
+      const now = new Date();
 
-  // Gün 04:30'da başlar
-  const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 4, 30, 0);
-  if (now < todayStart) {
-    todayStart.setDate(todayStart.getDate() - 1);
-  }
+      // Gün 04:30'da başlar
+      const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 4, 30, 0);
+      if (now < todayStart) {
+        todayStart.setDate(todayStart.getDate() - 1);
+      }
 
-  const elapsedSeconds = ((now - todayStart) / 1000) * 2;
-  const totalSeconds = Math.floor(elapsedSeconds);
+      // 2 kat hızda geçen zaman (saniye)
+      const elapsedSeconds = ((now - todayStart) / 1000) * 2;
+      const totalSeconds = Math.floor(elapsedSeconds);
 
-  const hours = Math.floor(totalSeconds / (120 * 120)) % 12;
-  const minutes = Math.floor((totalSeconds / 120) % 120);
-  const seconds = totalSeconds % 120;
+      const hours = Math.floor(totalSeconds / (120 * 120)) % 12;
+      const minutes = Math.floor((totalSeconds / 120) % 120);
+      const seconds = totalSeconds % 120;
 
-  // Base12 saat
-  const base12Clock = `${toBase12(hours)}.${toBase12(minutes).padStart(3,'θ')}.${toBase12(seconds).padStart(3,'θ')}`;
+      // Özel saat base12 formatında, sabit uzunlukta
+      const base12Time = `${toBase12(hours)}.${toBase12(minutes)}.${toBase12(seconds).padStart(3, 'θ')}`;
+      document.getElementById('clock').textContent = base12Time;
 
-  // Onluk saat (0 padded)
-  const decimalHours = hours.toString().padStart(2, '0');
-  const decimalMinutes = minutes.toString().padStart(3, '0');
-  const decimalSeconds = seconds.toString().padStart(3, '0');
+      // Özel tarih base12 formatında
+      const customDate = calculateCustomDate(now);
+      document.getElementById('date').textContent =
+        `${customDate.base12.day}.${customDate.base12.month}.${customDate.base12.year}`;
 
-  const decimalClock = `${decimalHours}.${decimalMinutes}.${decimalSeconds}`;
+      // Gerçek saat onluk formatta (saat 0-11, dakika 000-119, saniye 000-119)
+      const decimalHours = hours.toString().padStart(2, '0');
+      const decimalMinutes = minutes.toString().padStart(3, '0');
+      const decimalSeconds = seconds.toString().padStart(3, '0');
+      document.getElementById('clockDecimal').textContent =
+        `${decimalHours}.${decimalMinutes}.${decimalSeconds}`;
 
-  // Tarih
-  const customDate = calculateCustomDate(now);
-  
-  document.getElementById('clock').textContent = base12Clock;
-  document.getElementById('date').textContent = customDate.base12;
+      // Gerçek tarih onluk formatta
+      document.getElementById('dateDecimal').textContent =
+        `${customDate.decimal.day}.${customDate.decimal.month}.${customDate.decimal.year}`;
+    }
 
-  document.getElementById('clockDecimal').textContent = decimalClock;
-  document.getElementById('dateDecimal').textContent = `${customDate.decimal.day}.${customDate.decimal.month}.${customDate.decimal.year}`;
-}
-
-setInterval(updateTime, 500);
-updateTime();
-</script>
-
+    setInterval(updateTime, 500);
+    updateTime();
+  </script>
 </body>
 </html>
