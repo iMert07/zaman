@@ -4,11 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>Anatolya Sayacı</title>
-  <!-- Roboto font link -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --box-height: calc(100vh / 8 - 10px);
+      --box-height: calc((100vh - 50px) / 8); /* Başlık için 50px ayırdık */
       --value-font-size: calc(var(--box-height) * 0.4);
       --label-font-size: calc(var(--box-height) * 0.15);
     }
@@ -29,16 +28,13 @@
       height: 100vh;
       overflow: hidden;
       padding: 5px;
-      -webkit-text-size-adjust: none;
-      text-size-adjust: none;
-      touch-action: manipulation;
     }
     
     h1 {
-      font-size: 1.5rem;
+      font-size: 1.2rem;
       text-align: center;
       margin: 5px 0;
-      flex-shrink: 0;
+      padding: 0 5px;
     }
     
     .box {
@@ -46,19 +42,20 @@
       border-radius: 8px;
       text-align: center;
       width: 100%;
-      margin: 5px 0;
+      margin: 2px 0;
       height: var(--box-height);
+      min-height: 40px; /* Minimum yükseklik garantisi */
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 5px;
+      padding: 2px 5px;
     }
     
     .label {
       font-size: var(--label-font-size);
       color: #888;
-      margin-bottom: 2px;
-      flex-shrink: 0;
+      margin-bottom: 1px;
+      line-height: 1.2;
     }
     
     .value {
@@ -70,30 +67,35 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      word-break: break-all;
       overflow: hidden;
     }
     
-    @media (orientation: landscape) {
-      :root {
-        --box-height: calc(100vh / 8 - 5px);
-      }
-      
+    @media (min-width: 768px) {
       body {
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: center;
         align-content: flex-start;
+        padding: 10px;
       }
       
       h1 {
         width: 100%;
+        margin-bottom: 5px;
       }
       
       .box {
         width: calc(50% - 10px);
         margin: 5px;
-        height: calc((100vh - 40px) / 4);
+        height: calc((100vh - 60px) / 4);
+      }
+    }
+    
+    /* Küçük ekranlar için ek ayar */
+    @media (max-height: 600px) {
+      :root {
+        --value-font-size: calc(var(--box-height) * 0.35);
+        --label-font-size: calc(var(--box-height) * 0.13);
       }
     }
   </style>
