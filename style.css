@@ -10,9 +10,11 @@ body {
   margin: 0;
   padding: 20px;
 }
+
 h1 {
   margin-bottom: 30px;
 }
+
 .clock, .date, .decimalClock, .decimalDate {
   background: #222;
   padding: 15px 25px;
@@ -20,17 +22,18 @@ h1 {
   margin: 10px 0;
   text-align: center;
 }
+
 .label {
   font-size: 0.85rem;
   color: #555;
   margin-bottom: 6px;
 }
+
 .value {
   font-size: 2rem;
   letter-spacing: 0.15em;
-  /* Kutuları eşit ve yeterince geniş yapalım */
   display: inline-block;
   padding: 0 15px;
-  min-width: 14ch;  /* En uzun yazıya göre genişlik */
+  min-width: 16ch; /* Tüm kutular eşit genişlikte olacak şekilde ayarlandı */
   box-sizing: border-box;
 }
