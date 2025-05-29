@@ -4,12 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>Anatolya Sayacı</title>
+  <!-- Roboto font link -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --box-height: calc((100vh - 60px) / 8);
-      --value-font-size: min(calc(var(--box-height) * 0.45), 10vw);
-      --label-font-size: min(calc(var(--box-height) * 0.18), 4vw);
+      --box-height: calc(100vh / 8 - 10px);
+      --value-font-size: calc(var(--box-height) * 0.4);
+      --label-font-size: calc(var(--box-height) * 0.15);
     }
     
     * {
@@ -34,18 +35,10 @@
     }
     
     h1 {
-      font-size: min(5vw, 24px);
+      font-size: 1.5rem;
       text-align: center;
       margin: 5px 0;
       flex-shrink: 0;
-    }
-    
-    .container {
-      width: 100%;
-      height: calc(100vh - 40px);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
     }
     
     .box {
@@ -53,21 +46,19 @@
       border-radius: 8px;
       text-align: center;
       width: 100%;
-      margin: 2px 0;
+      margin: 5px 0;
       height: var(--box-height);
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 2px;
-      flex-shrink: 0;
+      padding: 5px;
     }
     
     .label {
       font-size: var(--label-font-size);
       color: #888;
-      margin-bottom: 1px;
+      margin-bottom: 2px;
       flex-shrink: 0;
-      line-height: 1.2;
     }
     
     .value {
@@ -83,48 +74,42 @@
       overflow: hidden;
     }
     
-    @media (min-width: 600px) {
-      .container {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: repeat(4, 1fr);
-        gap: 5px;
-        height: calc(100vh - 30px);
+    @media (orientation: landscape) {
+      :root {
+        --box-height: calc(100vh / 8 - 5px);
       }
       
-      .box {
-        height: 100%;
-        margin: 0;
+      body {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-content: flex-start;
       }
       
       h1 {
-        grid-column: 1 / -1;
-        margin-bottom: 0;
+        width: 100%;
       }
-    }
-    
-    @media (max-height: 600px) {
-      :root {
-        --box-height: calc((100vh - 40px) / 8);
-        --value-font-size: min(calc(var(--box-height) * 0.4), 10vw);
-        --label-font-size: min(calc(var(--box-height) * 0.15), 3.5vw);
+      
+      .box {
+        width: calc(50% - 10px);
+        margin: 5px;
+        height: calc((100vh - 40px) / 4);
       }
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <h1>Anatolya Sayacı</h1>
-    <div class="box"><div class="label">Düzine Sayacı</div><div id="clock" class="value">θθ.θθ.θθ</div></div>
-    <div class="box"><div class="label">Düzine Takvimi</div><div id="date" class="value">θθ.θθ.θθθθ</div></div>
-    <div class="box"><div class="label">Deste Sayacı</div><div id="clockDecimal" class="value">00.000.000</div></div>
-    <div class="box"><div class="label">Deste Takvimi</div><div id="dateDecimal" class="value">00.00.00000</div></div>
-    <div class="box"><div class="label">Gregoryen Sayacı</div><div id="clock2" class="value">00.00.00</div></div>
-    <div class="box"><div class="label">Gregoryen Takvimi</div><div id="date2" class="value">00.00.0000</div></div>
-    <div class="box"><div class="label">İslam Sayacı</div><div id="clockDecimal2" class="value">00.00.00</div></div>
-    <div class="box"><div class="label">İslam Takvimi</div><div id="dateDecimal2" class="value">00.00.0000</div></div>
-  </div>
+  <h1>Anatolya Sayacı</h1>
+
+  <div class="box"><div class="label">Düzine Sayacı</div><div id="clock" class="value">θθ.θθ.θθ</div></div>
+  <div class="box"><div class="label">Düzine Takvimi</div><div id="date" class="value">θθ.θθ.θθθθ</div></div>
+  <div class="box"><div class="label">Deste Sayacı</div><div id="clockDecimal" class="value">00.000.000</div></div>
+  <div class="box"><div class="label">Deste Takvimi</div><div id="dateDecimal" class="value">00.00.00000</div></div>
+  <div class="box"><div class="label">Gregoryen Sayacı</div><div id="clock2" class="value">00.00.00</div></div>
+  <div class="box"><div class="label">Gregoryen Takvimi</div><div id="date2" class="value">00.00.0000</div></div>
+  <div class="box"><div class="label">İslam Sayacı</div><div id="clockDecimal2" class="value">00.00.00</div></div>
+  <div class="box"><div class="label">İslam Takvimi</div><div id="dateDecimal2" class="value">00.00.0000</div></div>
 
   <script src="script.js"></script>
 </body>
