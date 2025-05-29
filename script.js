@@ -64,9 +64,71 @@ function calculateCustomDate(now) {
   };
 }
 
+function getGregorianDateTime(now) {
+  // Türkiye saati (UTC+3)
+  const options = {
+    timeZone: 'Europe/Istanbul',
+    hour12: false,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  };
+  
+  const formatter = new Intl.DateTimeFormat('tr-TR', options);
+  const parts = formatter.formatToParts(now);
+  
+  const dateTime = {};
+  parts.forEach(part => {
+    dateTime[part.type] = part.value;
+  });
+  
+  return {
+    date: `${dateTime.day}.${dateTime.month}.${dateTime.year}`,
+    time: `${dateTime.hour}:${dateTime.minute}:${dateTime.second}`
+  };
+}
+
+function getIslamicDateTime(now) {
+  // Hicri takvim için (3 saat ileri)
+  const islamicDate = new Date(now);
+  islamicDate.setHours(islamicDate.getHours() + 3); // 3 saat ileri
+  
+  // Hicri takvim hesaplaması (yaklaşık)
+  const islamicFormatter = new Intl.DateTimeFormat('tr-TR-u-ca-islamic', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    timeZone: 'Europe/Istanbul'
+  });
+  
+  const islamicParts = islamicFormatter.formatToParts(islamicDate);
+  const islamicDateTime = {};
+  islamicParts.forEach(part => {
+    islamicDateTime[part.type] = part.value;
+  });
+  
+  // İslami saat (Gregoryen saat +3)
+  const islamicTime = new Intl.DateTimeFormat('tr-TR', {
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,
+    timeZone: 'Europe/Istanbul'
+  }).format(islamicDate);
+  
+  return {
+    date: `${islamicDateTime.day}.${islamicDateTime.month}.${islamicDateTime.year}`,
+    time: islamicTime
+  };
+}
+
 function updateTime() {
   const now = new Date();
 
+  // Özel saat ve tarih
   const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 4, 30, 0);
   if (now < todayStart) {
     todayStart.setDate(todayStart.getDate() - 1);
@@ -87,11 +149,23 @@ function updateTime() {
 
   const customDate = calculateCustomDate(now);
 
+  // Gregoryen (Türkiye) saat ve tarih
+  const gregorian = getGregorianDateTime(now);
+  
+  // İslami (Hicri) saat ve tarih
+  const islamic = getIslamicDateTime(now);
+
+  // Güncelleme
   document.getElementById('clock').textContent = base12Clock;
   document.getElementById('date').textContent = customDate.base12;
-
   document.getElementById('clockDecimal').textContent = decimalClock;
   document.getElementById('dateDecimal').textContent = `${customDate.decimal.day}.${customDate.decimal.month}.${customDate.decimal.year}`;
+  
+  // Yeni eklenenler
+  document.getElementById('gregorianTime').textContent = gregorian.time;
+  document.getElementById('gregorianDate').textContent = gregorian.date;
+  document.getElementById('islamicTime').textContent = islamic.time;
+  document.getElementById('islamicDate').textContent = islamic.date;
 }
 
 setInterval(updateTime, 500);
