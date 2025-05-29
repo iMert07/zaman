@@ -31,7 +31,7 @@ function countExtraWeeks(years) {
 }
 
 function calculateCustomDate(now) {
-  const gregBase = new Date(1071, 2, 21); // 21 Mart 1071
+  const gregBase = new Date(1071, 2, 21);
   const daysPassed = Math.floor((now - gregBase) / (1000 * 60 * 60 * 24));
 
   let estimatedYear = Math.floor(daysPassed / 365);
@@ -56,16 +56,18 @@ function calculateCustomDate(now) {
   const month = Math.floor(dayOfYear / 30) + 1;
   const day = (dayOfYear % 30) + 1;
 
-  // Base12 olarak 6000 yıl ekle (görsel amaçlı), ama zamana dahil etme
-  const yearToDisplay = estimatedYear + 1 + (6 * 12 * 12 * 12); // +6000 base12 = 10368 decimal
+  const yearToDisplay = estimatedYear + 1 + (6 * 12 * 12 * 12);
 
   return `${toBase12(day)}.${toBase12(month)}.${toBase12(yearToDisplay)}`;
+}
+
+function padNumber(num, length) {
+  return num.toString().padStart(length, '0');
 }
 
 function updateTime() {
   const now = new Date();
 
-  // Gün 04:30'da başlar
   const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 4, 30, 0);
   if (now < todayStart) {
     todayStart.setDate(todayStart.getDate() - 1);
@@ -78,27 +80,55 @@ function updateTime() {
   const minutes = Math.floor((totalSeconds / 120) % 120);
   const seconds = totalSeconds % 120;
 
-  // Base12 stringler
   const base12Hours = toBase12(hours);
   const base12Minutes = toBase12(minutes);
   const base12Seconds = toBase12(seconds);
 
   const base12Time = `${base12Hours}.${base12Minutes}.${base12Seconds}`;
-
-  // Tarih base12
   const base12Date = calculateCustomDate(now);
 
-  // Tarihi parse edip onluk olarak gösterelim
   const [bDay, bMonth, bYear] = base12Date.split('.');
   const decimalDay = fromBase12(bDay);
   const decimalMonth = fromBase12(bMonth);
   const decimalYear = fromBase12(bYear);
 
-  // Saatin onluk hali zaten elimizde: hours, minutes, seconds
+  // Saat ve dakika saniye onluk sıfır dolgulu
+  const decimalTime = `${padNumber(hours, 2)}.${padNumber(minutes, 3)}.${padNumber(seconds, 3)}`;
+  const decimalDate = `${padNumber(decimalDay, 2)}.${padNumber(decimalMonth, 2)}.${padNumber(decimalYear, 4)}`;
 
-  document.getElementById('clock').textContent = `${base12Time}  (Decimal: ${hours}.${minutes}.${seconds})`;
-  document.getElementById('date').textContent = `${base12Date}  (Decimal: ${decimalDay}.${decimalMonth}.${decimalYear})`;
+  const clockElem = document.getElementById('clock');
+  const dateElem = document.getElementById('date');
+  const decimalElem = document.getElementById('decimal');
+
+  // Base12 saat üstte
+  clockElem.textContent = base12Time;
+
+  // Base12 tarih alt satırda
+  dateElem.textContent = base12Date;
+
+  // Onluk saat ve tarih en altta, ayrı ayrı satırlarda
+  decimalElem.innerHTML = `
+    Saat (decimal): ${decimalTime}<br>
+    Tarih (decimal): ${decimalDate}
+  `;
 }
+
+// Stil için CSS (monospace, hizalama)
+const style = document.createElement('style');
+style.textContent = `
+  #clock, #date, #decimal {
+    font-family: monospace;
+    text-align: center;
+    margin: 4px 0;
+    user-select: none;
+  }
+  #decimal {
+    margin-top: 12px;
+    font-size: 0.9em;
+    color: #555;
+  }
+`;
+document.head.appendChild(style);
 
 setInterval(updateTime, 500);
 updateTime();
