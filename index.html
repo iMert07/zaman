@@ -1,42 +1,23 @@
-<h1>Anatolya Zamanı</h1>
-
-<div class="box">
-  <div class="label">Düzine Sayacı</div>
-  <div class="value" id="clock12">00:00:00</div>
-</div>
-
-<div class="box">
-  <div class="label">Düzine Takvimi</div>
-  <div class="value" id="date12">0000-00-00</div>
-</div>
-
-<div class="box">
-  <div class="label">Deste Sayacı</div>
-  <div class="value" id="clock10">00:00:00</div>
-</div>
-
-<div class="box">
-  <div class="label">Deste Takvimi</div>
-  <div class="value" id="date10">0000-00-00</div>
-</div>
-
-<!-- Ek 4 kutu -->
-<div class="box">
-  <div class="label">Ekstra 1</div>
-  <div class="value">İçerik</div>
-</div>
-
-<div class="box">
-  <div class="label">Ekstra 2</div>
-  <div class="value">İçerik</div>
-</div>
-
-<div class="box">
-  <div class="label">Ekstra 3</div>
-  <div class="value">İçerik</div>
-</div>
-
-<div class="box">
-  <div class="label">Ekstra 4</div>
-  <div class="value">İçerik</div>
-</div>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Anatolya Zamanı</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <h1>Anatolya Zamanı</h1>
+  <div class="container">
+    <div class="block"><div class="label">Düzine Sayacı</div><div class="value" id="duzineSaat"></div></div>
+    <div class="block"><div class="label">Düzine Takvimi</div><div class="value" id="duzineTarih"></div></div>
+    <div class="block"><div class="label">Deste Sayacı</div><div class="value" id="desteSaat"></div></div>
+    <div class="block"><div class="label">Deste Takvimi</div><div class="value" id="desteTarih"></div></div>
+    <div class="block"><div class="label">Gerçek Saat</div><div class="value" id="gercekSaat"></div></div>
+    <div class="block"><div class="label">Gerçek Tarih</div><div class="value" id="gercekTarih"></div></div>
+    <div class="block"><div class="label">Düzine Sayacı (Onluk)</div><div class="value" id="duzineSaatDecimal"></div></div>
+    <div class="block"><div class="label">Düzine Takvimi (Onluk)</div><div class="value" id="duzineTarihDecimal"></div></div>
+  </div>
+</body>
+</html>
