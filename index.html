@@ -1,23 +1,34 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Anatolya Zamanı</title>
-  <link rel="stylesheet" href="style.css">
-  <script defer src="script.js"></script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Anatolya Zamanı</title>
+<link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Anatolya Zamanı</h1>
-  <div class="container">
-    <div class="block"><div class="label">Düzine Sayacı</div><div class="value" id="duzineSaat"></div></div>
-    <div class="block"><div class="label">Düzine Takvimi</div><div class="value" id="duzineTarih"></div></div>
-    <div class="block"><div class="label">Deste Sayacı</div><div class="value" id="desteSaat"></div></div>
-    <div class="block"><div class="label">Deste Takvimi</div><div class="value" id="desteTarih"></div></div>
-    <div class="block"><div class="label">Gerçek Saat</div><div class="value" id="gercekSaat"></div></div>
-    <div class="block"><div class="label">Gerçek Tarih</div><div class="value" id="gercekTarih"></div></div>
-    <div class="block"><div class="label">Düzine Sayacı (Onluk)</div><div class="value" id="duzineSaatDecimal"></div></div>
-    <div class="block"><div class="label">Düzine Takvimi (Onluk)</div><div class="value" id="duzineTarihDecimal"></div></div>
-  </div>
+
+<h1>Anatolya Zamanı</h1>
+
+<div class="clock">
+  <div class="label">Düzine Sayacı</div>
+  <div id="clock" class="value">θθ.θθ.θθ</div>
+</div>
+<div class="date">
+  <div class="label">Düzine</div>
+  <div id="date" class="value">θθ.θθ.θθθθ</div>
+</div>
+
+<div class="decimalClock">
+  <div class="label">Deste Sayacı</div>
+  <div id="clockDecimal" class="value">00.000.000</div>
+</div>
+<div class="decimalDate">
+  <div class="label">Deste Sayacı</div>
+  <div id="dateDecimal" class="value">00.00.00000</div>
+</div>
+
+<script src="script.js"></script>
+
 </body>
 </html>
