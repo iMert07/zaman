@@ -77,76 +77,16 @@ function calculateCustomDate(now) {
   };
 }
 
-function calculateHijriDate(date) {
-  // Hicri hesaplama için gerçek saat üzerinden basit hesap:
-  // Bu örnekte Hicri hesaplama için yaklaşık algoritma kullanılıyor.
-  // Daha doğru hesap için özel kütüphane veya API kullanılmalı.
-
-  // İslam saati, Türkiye saatinden 3 saat ileride, gün başlangıcı 21:00.
-  // Türkiye saati
-  let turkeyDate = new Date(date);
-  // Gün başlangıcı: bugün 21:00'den öncesi için bir önceki güne kaydır
-  let hijriDayStart = new Date(turkeyDate);
-  hijriDayStart.setHours(21,0,0,0);
-  if (turkeyDate < hijriDayStart) {
-    hijriDayStart.setDate(hijriDayStart.getDate() -1);
-  }
-
-  // Hicri hesaplama için sabit:
-  // Hicri başlangıç: 16 Temmuz 622 (Miladi)
-  const hijriBase = new Date(Date.UTC(622,6,16));
-  const daysPassed = Math.floor((hijriDayStart - hijriBase) / (1000 * 60 * 60 * 24));
-
-  // Hicri yıl yaklaşık 354 gün
-  let hijriYear = Math.floor(daysPassed / 354);
-  let dayOfYear = daysPassed % 354;
-
-  // 12 ay, 29 veya 30 gün (ortalama 29.5)
-  const hijriMonths = [30,29,30,29,30,29,30,29,30,29,30,29];
-  let hijriMonth = 0;
-  while(dayOfYear >= hijriMonths[hijriMonth]){
-    dayOfYear -= hijriMonths[hijriMonth];
-    hijriMonth++;
-  }
-  let hijriDay = dayOfYear + 1;
-
-  return {
-    year: hijriYear + 1,
-    month: hijriMonth + 1,
-    day: hijriDay
-  };
-}
-
 function updateTime() {
   const now = new Date();
 
-  // --- Türkiye saati ve tarihi (Gregoryen gerçek) ---
-  const turkeyNow = new Date(now.toLocaleString("en-US", {timeZone: "Europe/Istanbul"}));
-
-  const turkeyHours = turkeyNow.getHours().toString().padStart(2,'0');
-  const turkeyMinutes = turkeyNow.getMinutes().toString().padStart(2,'0');
-  const turkeySeconds = turkeyNow.getSeconds().toString().padStart(2,'0');
-  const turkeyDate = turkeyNow.getDate().toString().padStart(2,'0');
-  const turkeyMonth = (turkeyNow.getMonth()+1).toString().padStart(2,'0');
-  const turkeyYear = turkeyNow.getFullYear();
-
-  // --- İslam saati: Türkiye saatinden 3 saat ileri ---
-  const islamDateRaw = new Date(turkeyNow.getTime() + 3*60*60*1000);
-  const islamHours = islamDateRaw.getHours().toString().padStart(2,'0');
-  const islamMinutes = islamDateRaw.getMinutes().toString().padStart(2,'0');
-  const islamSeconds = islamDateRaw.getSeconds().toString().padStart(2,'0');
-
-  // İslam tarihi hicri hesaplama
-  const hijri = calculateHijriDate(turkeyNow);
-
-  // --- Özel takvim ve saat ---
   // Gün 04:30'da başlar
-  const todayStart = new Date(turkeyNow.getFullYear(), turkeyNow.getMonth(), turkeyNow.getDate(), 4, 30, 0);
-  if (turkeyNow < todayStart) {
+  const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 4, 30, 0);
+  if (now < todayStart) {
     todayStart.setDate(todayStart.getDate() - 1);
   }
 
-  const elapsedSeconds = ((turkeyNow - todayStart) / 1000) * 2;
+  const elapsedSeconds = ((now - todayStart) / 1000) * 2;
   const totalSeconds = Math.floor(elapsedSeconds);
 
   const hours = Math.floor(totalSeconds / (120 * 120)) % 12;
@@ -161,21 +101,16 @@ function updateTime() {
   const decimalMinutes = minutes.toString().padStart(3, '0');
   const decimalSeconds = seconds.toString().padStart(3, '0');
 
-  // Tarih (özel)
-  const customDate = calculateCustomDate(turkeyNow);
+  const decimalClock = `${decimalHours}.${decimalMinutes}.${decimalSeconds}`;
 
-  // DOM'a yazdırma
-  document.getElementById('gregoryenClock').textContent = `${turkeyHours}:${turkeyMinutes}:${turkeySeconds}`;
-  document.getElementById('gregoryenDate').textContent = `${turkeyDate}.${turkeyMonth}.${turkeyYear}`;
+  // Tarih
+  const customDate = calculateCustomDate(now);
 
-  document.getElementById('islamClock').textContent = `${islamHours}:${islamMinutes}:${islamSeconds}`;
-  document.getElementById('islamDate').textContent = `${hijri.day}.${hijri.month}.${hijri.year}`;
+  document.getElementById('clock').textContent = base12Clock;
+  document.getElementById('date').textContent = customDate.base12;
 
-  document.getElementById('customClock').textContent = base12Clock;
-  document.getElementById('customDate').textContent = customDate.base12;
-
-  document.getElementById('customClockDecimal').textContent = `${decimalHours}.${decimalMinutes}.${decimalSeconds}`;
-  document.getElementById('customDateDecimal').textContent = `${customDate.decimal.day}.${customDate.decimal.month}.${customDate.decimal.year}`;
+  document.getElementById('clockDecimal').textContent = decimalClock;
+  document.getElementById('dateDecimal').textContent = `${customDate.decimal.day}.${customDate.decimal.month}.${customDate.decimal.year}`;
 }
 
 setInterval(updateTime, 500);
