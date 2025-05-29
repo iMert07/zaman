@@ -56,7 +56,7 @@ function calculateCustomDate(now) {
   function fromBase12(str) {
     const digits = "θ123456789ΦΛ";
     let val = 0;
-    for (let ch of str) {
+    for(let ch of str){
       val = val * 12 + digits.indexOf(ch);
     }
     return val;
@@ -68,7 +68,7 @@ function calculateCustomDate(now) {
   const decYear = fromBase12(base12YearStr).toString().padStart(5, '0');
 
   return {
-    base12: `${base12DayStr}.${base12MonthStr}.${base12YearStr}`,
+    base12: ${base12DayStr}.${base12MonthStr}.${base12YearStr},
     decimal: {
       day: decDay,
       month: decMonth,
@@ -94,14 +94,14 @@ function updateTime() {
   const seconds = totalSeconds % 120;
 
   // Base12 saat
-  const base12Clock = `${toBase12(hours)}.${toBase12(minutes)}.${toBase12(seconds)}`;
+  const base12Clock = ${toBase12(hours)}.${toBase12(minutes)}.${toBase12(seconds)};
 
   // Onluk saat (0 padded)
   const decimalHours = hours.toString().padStart(2, '0');
   const decimalMinutes = minutes.toString().padStart(3, '0');
   const decimalSeconds = seconds.toString().padStart(3, '0');
 
-  const decimalClock = `${decimalHours}.${decimalMinutes}.${decimalSeconds}`;
+  const decimalClock = ${decimalHours}.${decimalMinutes}.${decimalSeconds};
 
   // Tarih
   const customDate = calculateCustomDate(now);
@@ -110,7 +110,7 @@ function updateTime() {
   document.getElementById('date').textContent = customDate.base12;
 
   document.getElementById('clockDecimal').textContent = decimalClock;
-  document.getElementById('dateDecimal').textContent = `${customDate.decimal.day}.${customDate.decimal.month}.${customDate.decimal.year}`;
+  document.getElementById('dateDecimal').textContent = ${customDate.decimal.day}.${customDate.decimal.month}.${customDate.decimal.year};
 }
 
 setInterval(updateTime, 500);
