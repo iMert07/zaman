@@ -62,8 +62,9 @@
 </div>
 
 <script>
+const digits = "θ123456789ΦΛ";
+
 function toBase12(n) {
-  const digits = "θ123456789ΦΛ";
   if (n === 0) return "θθ";
   let result = "";
   while (n > 0) {
@@ -71,6 +72,15 @@ function toBase12(n) {
     n = Math.floor(n / 12);
   }
   return result.padStart(2, 'θ');
+}
+
+// Base12 karakter dizisini decimal sayıya çevirir
+function base12ToDecimal(str) {
+  let val = 0;
+  for (let i = 0; i < str.length; i++) {
+    val = val * 12 + digits.indexOf(str[i]);
+  }
+  return val;
 }
 
 function countExtraWeeks(years) {
@@ -109,15 +119,25 @@ function calculateCustomDate(now) {
   const month = Math.floor(dayOfYear / 30) + 1;
   const day = (dayOfYear % 30) + 1;
 
-  // Base12 olarak 6000 yıl ekle (görsel amaçlı), ama zamana dahil etme
-  const yearToDisplay = estimatedYear + 1 + (6 * 12 * 12 * 12); // +6000 base12 = 10368
+  // Görsel amaçlı 6000 yıl ekle
+  const yearToDisplay = estimatedYear + 1 + (6 * 12 * 12 * 12); // +6000 base12
+
+  // Base12 stringler
+  const dayBase12 = toBase12(day);
+  const monthBase12 = toBase12(month);
+  const yearBase12 = toBase12(yearToDisplay);
+
+  // Base12 -> decimal çeviri
+  const dayDecimal = base12ToDecimal(dayBase12);
+  const monthDecimal = base12ToDecimal(monthBase12);
+  const yearDecimal = base12ToDecimal(yearBase12);
 
   return {
-    base12: `${toBase12(day)}.${toBase12(month)}.${toBase12(yearToDisplay)}`,
+    base12: `${dayBase12}.${monthBase12}.${yearBase12}`,
     decimal: {
-      day: day.toString().padStart(2, '0'),
-      month: month.toString().padStart(2, '0'),
-      year: (estimatedYear + 1).toString().padStart(5, '0'),  // 5 basamaklı yıl
+      day: dayDecimal.toString().padStart(2, '0'),
+      month: monthDecimal.toString().padStart(2, '0'),
+      year: yearDecimal.toString().padStart(5, '0'),
     }
   };
 }
@@ -138,10 +158,10 @@ function updateTime() {
   const minutes = Math.floor((totalSeconds / 120) % 120);
   const seconds = totalSeconds % 120;
 
-  // Base12 saat - sadece 2 basamaklı her biri
+  // Base12 saat - 2 basamaklı
   const base12Clock = `${toBase12(hours)}.${toBase12(minutes)}.${toBase12(seconds)}`;
 
-  // Onluk saat (0 padded)
+  // Onluk saat
   const decimalHours = hours.toString().padStart(2, '0');
   const decimalMinutes = minutes.toString().padStart(3, '0');
   const decimalSeconds = seconds.toString().padStart(3, '0');
@@ -150,7 +170,7 @@ function updateTime() {
 
   // Tarih
   const customDate = calculateCustomDate(now);
-  
+
   document.getElementById('clock').textContent = base12Clock;
   document.getElementById('date').textContent = customDate.base12;
 
