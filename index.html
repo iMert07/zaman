@@ -7,7 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --box-height: calc((100vh - 70px) / 8); /* Daha dar hesaplama */
+      --box-height: calc((100vh - 70px) / 8); /* Kullanıcının mevcut daraltma denemesi korunuyor */
       --value-font-size: calc(var(--box-height) * 0.36);
       --label-font-size: calc(var(--box-height) * 0.13);
     }
@@ -20,7 +20,7 @@
     
     html, body {
       height: 100%;
-      overflow: hidden;
+      overflow: hidden; /* Sığmazsa kaydırma çubuğu çıkmaz, içerik kesilir */
     }
     
     body {
@@ -46,7 +46,7 @@
     
     .scroll-container {
       flex: 1;
-      overflow: hidden;
+      overflow: hidden; /* İçerik taşarsa kesilir */
       display: flex;
       flex-direction: column;
     }
@@ -58,7 +58,7 @@
       width: 100%;
       margin: 1px 0;
       height: var(--box-height);
-      min-height: 32px;
+      min-height: 28px; /* DEĞİŞİKLİK: 32px'den 28px'e düşürüldü */
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -118,7 +118,7 @@
         width: calc(50% - 3px);
         margin: 0;
         height: var(--box-height);
-        min-height: 60px;
+        min-height: 60px; /* Bilgisayar görünümü için min-height daha yüksek kalabilir */
       }
       
       .label {
@@ -133,18 +133,20 @@
     /* MOBİL DAR EKRANLAR İÇİN EK AYAR */
     @media (max-height: 700px) and (orientation: portrait) {
       :root {
-        --box-height: calc((100vh - 60px) / 8);
+        /* Kullanıcının mevcut daraltma denemesi korunuyor */
+        --box-height: calc((100vh - 60px) / 8); 
         --value-font-size: calc(var(--box-height) * 0.34);
         --label-font-size: calc(var(--box-height) * 0.12);
       }
       
       h1 {
-        height: 16px;
-        font-size: 0.8rem;
+        height: 15px; /* DEĞİŞİKLİK: 16px'den 15px'e */
+        font-size: 0.75rem; /* DEĞİŞİKLİK: 0.8rem'den 0.75rem'e */
+        margin: 1px 0; /* DEĞİŞİKLİK: 2px 0'dan 1px 0'a (dikeyde 2px kazanç) */
       }
       
       .box {
-        min-height: 30px;
+        min-height: 26px; /* DEĞİŞİKLİK: 30px'den 26px'e düşürüldü */
         padding: 0 2px;
       }
     }
