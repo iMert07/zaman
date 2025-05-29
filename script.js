@@ -86,8 +86,8 @@ function getGregorianDateTime(now) {
   });
   
   return {
-    date: `${dateTime.day}.${dateTime.month}.${dateTime.year}`,
-    time: `${dateTime.hour}:${dateTime.minute}:${dateTime.second}`
+    time: `${dateTime.hour}.${dateTime.minute}.${dateTime.second}`,
+    date: `${dateTime.day}.${dateTime.month}.${dateTime.year}`
   };
 }
 
@@ -96,7 +96,7 @@ function getIslamicDateTime(now) {
   const islamicDate = new Date(now);
   islamicDate.setHours(islamicDate.getHours() + 3); // 3 saat ileri
   
-  // Hicri takvim hesaplaması (yaklaşık)
+  // Hicri takvim hesaplaması
   const islamicFormatter = new Intl.DateTimeFormat('tr-TR-u-ca-islamic', {
     day: '2-digit',
     month: '2-digit',
@@ -119,9 +119,11 @@ function getIslamicDateTime(now) {
     timeZone: 'Europe/Istanbul'
   }).format(islamicDate);
   
+  const [h, m, s] = islamicTime.split(':');
+  
   return {
-    date: `${islamicDateTime.day}.${islamicDateTime.month}.${islamicDateTime.year}`,
-    time: islamicTime
+    time: `${h}.${m}.${s}`,
+    date: `${islamicDateTime.day}.${islamicDateTime.month}.${islamicDateTime.year}`
   };
 }
 
@@ -155,17 +157,19 @@ function updateTime() {
   // İslami (Hicri) saat ve tarih
   const islamic = getIslamicDateTime(now);
 
-  // Güncelleme
+  // Güncelleme - Özel Zaman
   document.getElementById('clock').textContent = base12Clock;
   document.getElementById('date').textContent = customDate.base12;
   document.getElementById('clockDecimal').textContent = decimalClock;
   document.getElementById('dateDecimal').textContent = `${customDate.decimal.day}.${customDate.decimal.month}.${customDate.decimal.year}`;
   
-  // Yeni eklenenler
-  document.getElementById('gregorianTime').textContent = gregorian.time;
-  document.getElementById('gregorianDate').textContent = gregorian.date;
-  document.getElementById('islamicTime').textContent = islamic.time;
-  document.getElementById('islamicDate').textContent = islamic.date;
+  // Güncelleme - Gregoryen
+  document.getElementById('clock2').textContent = gregorian.time;
+  document.getElementById('date2').textContent = gregorian.date;
+  
+  // Güncelleme - İslami
+  document.getElementById('clockDecimal2').textContent = islamic.time;
+  document.getElementById('dateDecimal2').textContent = islamic.date;
 }
 
 setInterval(updateTime, 500);
