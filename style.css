@@ -4,42 +4,48 @@ body {
   font-family: 'Open Sans', sans-serif;
   background: #121212;
   color: #00d8d6;
+  margin: 0;
+  padding: 30px 20px 60px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  height: 100vh;
-  margin: 0;
-  padding: 20px 15px 10px 15px;
-  overflow: hidden;
+  min-height: 100vh;
+  box-sizing: border-box;
 }
 
 h1 {
   margin-bottom: 20px;
-  font-size: 1.4rem;
+  font-size: 1.5rem;
+  text-align: center;
 }
 
-.box {
-  background: #222;
-  padding: 10px 18px;
-  border-radius: 8px;
-  margin: 6px 0;
-  text-align: center;
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 10px;
   width: 100%;
-  max-width: 300px;
+  max-width: 600px;
+}
+
+.block {
+  background: #222;
+  padding: 12px 20px;
+  border-radius: 8px;
+  text-align: center;
 }
 
 .label {
-  font-size: 0.75rem;
-  color: #555;
-  margin-bottom: 4px;
+  font-size: 0.85rem;
+  color: #888;
+  margin-bottom: 6px;
 }
 
 .value {
   font-size: 1.6rem;
-  letter-spacing: 0.12em;
-  display: inline-block;
-  padding: 0 10px;
-  min-width: 16ch;
-  box-sizing: border-box;
+  letter-spacing: 0.08em;
+  min-height: 2.4em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
