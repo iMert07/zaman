@@ -7,24 +7,24 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: flex-start; /* Yukarı yasla */
   height: 100vh;
   margin: 0;
-  padding: 20px 15px;
-  /* overflow: hidden; ← bu satırı kaldırdık */
+  padding: 10px 15px 10px 15px; /* Yukarı ve aşağı padding azaltıldı */
+  overflow-y: hidden; /* Dikey kaydırmayı engelle */
 }
 
 h1 {
-  margin-bottom: 20px;
+  margin-bottom: 10px; /* Daha az boşluk */
   font-size: 1.5rem;
   text-align: center;
 }
 
 .box {
   background: #222;
-  padding: 10px 20px;
+  padding: 8px 15px; /* Daha küçük padding */
   border-radius: 8px;
-  margin: 6px 0;
+  margin: 4px 0; /* Daha az dikey boşluk */
   text-align: center;
   width: 100%;
   max-width: 360px;
@@ -34,11 +34,11 @@ h1 {
 .label {
   font-size: 0.8rem;
   color: #888;
-  margin-bottom: 4px;
+  margin-bottom: 3px; /* Daha az boşluk */
 }
 
 .value {
-  font-size: 1.6rem;
+  font-size: 1.5rem; /* Biraz daha küçük */
   letter-spacing: 0.1em;
   display: inline-block;
   min-width: 14ch;
@@ -50,9 +50,9 @@ h1 {
     font-size: 1.2rem;
   }
   .value {
-    font-size: 1.3rem;
+    font-size: 1.2rem; /* Mobilde biraz daha küçült */
   }
   .label {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
   }
 }
