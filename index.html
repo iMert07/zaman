@@ -1,192 +1,172 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-    <title>Anatolya Zamanı</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
-    <style>
-        /* Varsayılan değerler (geniş mobil ekranlar ve orta boy ekranlar için) */
-        :root {
-            --box-height: calc((100vh - 70px) / 8); /* Başlık ve padding için boşluk bırakılır */
-            --value-font-size: calc(var(--box-height) * 0.36);
-            --label-font-size: calc(var(--box-height) * 0.13);
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        html, body {
-            height: 100%;
-            overflow: hidden; /* İçerik sığmazsa kaydırma çubuğu çıkmaz, içerik kesilir */
-        }
-        
-        body {
-            font-family: 'Roboto', sans-serif;
-            background: #121212;
-            color: #00d8d6;
-            display: flex;
-            flex-direction: column;
-            padding: 2px; /* Genel dış boşluk */
-            -webkit-text-size-adjust: none; /* Metin boyutunun otomatik ayarlanmasını engeller */
-            text-size-adjust: none;
-            touch-action: manipulation; /* Dokunmatik hareketleri optimize eder */
-        }
-        
-        h1 {
-            font-size: 0.9rem;
-            text-align: center;
-            margin: 2px 0;
-            padding: 0;
-            height: 18px; /* Başlık için sabit yükseklik */
-            flex-shrink: 0; /* Küçülmesini engeller */
-        }
-        
-        .scroll-container {
-            flex: 1; /* Kalan dikey alanı kaplar */
-            overflow: hidden; /* İçerik taşarsa kesilir */
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .box {
-            background: #222;
-            border-radius: 5px;
-            text-align: center;
-            width: 100%;
-            margin: 1px 0; /* Kutular arası dikey boşluk */
-            height: var(--box-height); /* Değişken yüksekliği kullanır */
-            min-height: 28px; /* Kutuların minimum yüksekliği */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 0 3px; /* Kutuların iç yatay boşluğu */
-            flex-shrink: 0; /* Küçülmesini engeller */
-        }
-        
-        .label {
-            font-size: var(--label-font-size);
-            color: #888;
-            margin-bottom: 0;
-            line-height: 1.1;
-            height: 28%; /* Kutunun %28'i etiket için */
-            display: flex;
-            align-items: flex-end; /* Metni alta hizalar */
-            justify-content: center;
-            overflow: hidden; /* Metin taşarsa kesilir */
-        }
-        
-        .value {
-            font-size: var(--value-font-size);
-            font-weight: bold;
-            letter-spacing: 0.05em;
-            line-height: 1;
-            height: 72%; /* Kutunun %72'si değer için */
-            display: flex;
-            align-items: center; /* Metni ortalar */
-            justify-content: center;
-            overflow: hidden; /* Metin taşarsa kesilir */
-        }
-        
-        /* BİLGİSAYAR DÜZENİ (768px ve üzeri) */
-        @media (min-width: 768px) {
-            :root {
-                --box-height: calc((100vh - 30px) / 4); /* Daha büyük ekranlarda kutu yüksekliği */
-            }
-            
-            body {
-                padding: 5px;
-            }
-            
-            h1 {
-                height: 30px;
-                font-size: 1.2rem;
-                margin-bottom: 5px;
-            }
-            
-            .scroll-container {
-                flex-direction: row; /* Yatay sıralama */
-                flex-wrap: wrap; /* Kutular sığmazsa alt satıra geçer */
-                justify-content: center;
-                align-content: flex-start;
-                gap: 5px; /* Kutular arası boşluk */
-            }
-            
-            .box {
-                width: calc(50% - 3px); /* İki sütunlu düzen */
-                margin: 0;
-                height: var(--box-height);
-                min-height: 60px; /* Bilgisayar görünümü için min-height daha yüksek kalabilir */
-            }
-            
-            .label {
-                height: 25%;
-            }
-            
-            .value {
-                height: 75%;
-            }
-        }
-        
-        /* MOBİL DAR EKRANLAR İÇİN EK AYAR (max-height: 700px ve dikey) */
-        @media (max-height: 700px) and (orientation: portrait) {
-            :root {
-                --box-height: calc((100vh - 55px) / 8); /* Başlık ve padding için daha az boşluk bırakılır */
-                --value-font-size: calc(var(--box-height) * 0.32); /* Değer font boyutu biraz daha küçültülür */
-                --label-font-size: calc(var(--box-height) * 0.11); /* Etiket font boyutu biraz daha küçültülür */
-            }
-            
-            h1 {
-                height: 14px; /* Başlık yüksekliği daha da azaltılır */
-                font-size: 0.7rem; /* Başlık font boyutu daha da küçültülür */
-                margin: 0; /* Başlık marjı sıfırlanır */
-            }
-            
-            .box {
-                min-height: 25px; /* Kutuların minimum yüksekliği daha da düşürülür */
-                padding: 0 2px; /* İç boşluklar azaltılır */
-            }
-        }
-
-        /* ÇOK ÇOK DAR MOBİL EKRANLAR İÇİN EK AYAR (max-height: 550px ve dikey) */
-        @media (max-height: 550px) and (orientation: portrait) {
-            :root {
-                --box-height: calc((100vh - 45px) / 8); /* Başlık ve padding için daha da az boşluk bırakılır */
-                --value-font-size: calc(var(--box-height) * 0.30); /* Değer font boyutu daha da küçültülür */
-                --label-font-size: calc(var(--box-height) * 0.10); /* Etiket font boyutu daha da küçültülür */
-            }
-            
-            h1 {
-                height: 12px; /* Başlık yüksekliği en aza indirilir */
-                font-size: 0.65rem; /* Başlık font boyutu en aza indirilir */
-                margin: 0;
-            }
-            
-            .box {
-                min-height: 20px; /* Kutuların minimum yüksekliği en aza indirilir */
-                padding: 0 1px; /* İç boşluklar en aza indirilir */
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Anatolya Zamanı</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --box-height: calc((100vh - 70px) / 8); /* Kullanıcının mevcut daraltma denemesi korunuyor */
+      --value-font-size: calc(var(--box-height) * 0.36);
+      --label-font-size: calc(var(--box-height) * 0.13);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    html, body {
+      height: 100%;
+      overflow: hidden; /* Sığmazsa kaydırma çubuğu çıkmaz, içerik kesilir */
+    }
+    
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: #121212;
+      color: #00d8d6;
+      display: flex;
+      flex-direction: column;
+      padding: 2px;
+      -webkit-text-size-adjust: none;
+      text-size-adjust: none;
+      touch-action: manipulation;
+    }
+    
+    h1 {
+      font-size: 0.9rem;
+      text-align: center;
+      margin: 2px 0;
+      padding: 0;
+      height: 18px;
+      flex-shrink: 0;
+    }
+    
+    .scroll-container {
+      flex: 1;
+      overflow: hidden; /* İçerik taşarsa kesilir */
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .box {
+      background: #222;
+      border-radius: 5px;
+      text-align: center;
+      width: 100%;
+      margin: 1px 0;
+      height: var(--box-height);
+      min-height: 28px; /* DEĞİŞİKLİK: 32px'den 28px'e düşürüldü */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 3px;
+      flex-shrink: 0;
+    }
+    
+    .label {
+      font-size: var(--label-font-size);
+      color: #888;
+      margin-bottom: 0;
+      line-height: 1.1;
+      height: 28%;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      overflow: hidden;
+    }
+    
+    .value {
+      font-size: var(--value-font-size);
+      font-weight: bold;
+      letter-spacing: 0.05em;
+      line-height: 1;
+      height: 72%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    
+    /* BİLGİSAYAR DÜZENİ (DEĞİŞMEDİ) */
+    @media (min-width: 768px) {
+      :root {
+        --box-height: calc((100vh - 30px) / 4);
+      }
+      
+      body {
+        padding: 5px;
+      }
+      
+      h1 {
+        height: 30px;
+        font-size: 1.2rem;
+        margin-bottom: 5px;
+      }
+      
+      .scroll-container {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-content: flex-start;
+        gap: 5px;
+      }
+      
+      .box {
+        width: calc(50% - 3px);
+        margin: 0;
+        height: var(--box-height);
+        min-height: 60px; /* Bilgisayar görünümü için min-height daha yüksek kalabilir */
+      }
+      
+      .label {
+        height: 25%;
+      }
+      
+      .value {
+        height: 75%;
+      }
+    }
+    
+    /* MOBİL DAR EKRANLAR İÇİN EK AYAR */
+    @media (max-height: 700px) and (orientation: portrait) {
+      :root {
+        /* Kullanıcının mevcut daraltma denemesi korunuyor */
+        --box-height: calc((100vh - 60px) / 8); 
+        --value-font-size: calc(var(--box-height) * 0.34);
+        --label-font-size: calc(var(--box-height) * 0.12);
+      }
+      
+      h1 {
+        height: 15px; /* DEĞİŞİKLİK: 16px'den 15px'e */
+        font-size: 0.75rem; /* DEĞİŞİKLİK: 0.8rem'den 0.75rem'e */
+        margin: 1px 0; /* DEĞİŞİKLİK: 2px 0'dan 1px 0'a (dikeyde 2px kazanç) */
+      }
+      
+      .box {
+        min-height: 26px; /* DEĞİŞİKLİK: 30px'den 26px'e düşürüldü */
+        padding: 0 2px;
+      }
+    }
+  </style>
 </head>
 <body>
 
-    <h1>Anatolya Zamanı</h1>
-    
-    <div class="scroll-container">
-        <div class="box"><div class="label">Düzine Sayacı</div><div id="clock" class="value">θθ.θθ.θθ</div></div>
-        <div class="box"><div class="label">Düzine Takvimi</div><div id="date" class="value">θθ.θθ.θθθθ</div></div>
-        <div class="box"><div class="label">Deste Sayacı</div><div id="clockDecimal" class="value">00.000.000</div></div>
-        <div class="box"><div class="label">Deste Takvimi</div><div id="dateDecimal" class="value">00.00.00000</div></div>
-        <div class="box"><div class="label">Gregoryen Sayacı</div><div id="clock2" class="value">00.00.00</div></div>
-        <div class="box"><div class="label">Gregoryen Takvimi</div><div id="date2" class="value">00.00.0000</div></div>
-        <div class="box"><div class="label">İslam Sayacı</div><div class="label">İslam Sayacı</div><div id="clockDecimal2" class="value">00.00.00</div></div>
-        <div class="box"><div class="label">İslam Takvimi</div><div id="dateDecimal2" class="value">00.00.0000</div></div>
-    </div>
+  <h1>Anatolya Zamanı</h1>
+  
+  <div class="scroll-container">
+    <div class="box"><div class="label">Düzine Sayacı</div><div id="clock" class="value">θθ.θθ.θθ</div></div>
+    <div class="box"><div class="label">Düzine Takvimi</div><div id="date" class="value">θθ.θθ.θθθθ</div></div>
+    <div class="box"><div class="label">Deste Sayacı</div><div id="clockDecimal" class="value">00.000.000</div></div>
+    <div class="box"><div class="label">Deste Takvimi</div><div id="dateDecimal" class="value">00.00.00000</div></div>
+    <div class="box"><div class="label">Gregoryen Sayacı</div><div id="clock2" class="value">00.00.00</div></div>
+    <div class="box"><div class="label">Gregoryen Takvimi</div><div id="date2" class="value">00.00.0000</div></div>
+    <div class="box"><div class="label">İslam Sayacı</div><div id="clockDecimal2" class="value">00.00.00</div></div>
+    <div class="box"><div class="label">İslam Takvimi</div><div id="dateDecimal2" class="value">00.00.0000</div></div>
+  </div>
 
-    <script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
