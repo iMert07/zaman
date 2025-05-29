@@ -92,38 +92,25 @@ function updateTime() {
   const decimalMonth = fromBase12(bMonth);
   const decimalYear = fromBase12(bYear);
 
-  // Saat ve dakika saniye onluk sıfır dolgulu
   const decimalTime = `${padNumber(hours, 2)}.${padNumber(minutes, 3)}.${padNumber(seconds, 3)}`;
   const decimalDate = `${padNumber(decimalDay, 2)}.${padNumber(decimalMonth, 2)}.${padNumber(decimalYear, 4)}`;
 
-  const clockElem = document.getElementById('clock');
-  const dateElem = document.getElementById('date');
-  const decimalElem = document.getElementById('decimal');
+  document.getElementById('clock').textContent = base12Time;
+  document.getElementById('date').textContent = base12Date;
 
-  // Base12 saat üstte
-  clockElem.textContent = base12Time;
-
-  // Base12 tarih alt satırda
-  dateElem.textContent = base12Date;
-
-  // Onluk saat ve tarih en altta, ayrı ayrı satırlarda
-  decimalElem.innerHTML = `
-    Saat (decimal): ${decimalTime}<br>
-    Tarih (decimal): ${decimalDate}
-  `;
+  document.getElementById('decimalTime').textContent = decimalTime;
+  document.getElementById('decimalDate').textContent = decimalDate;
 }
 
-// Stil için CSS (monospace, hizalama)
 const style = document.createElement('style');
 style.textContent = `
-  #clock, #date, #decimal {
+  #clock, #date, #decimalTime, #decimalDate {
     font-family: monospace;
     text-align: center;
-    margin: 4px 0;
     user-select: none;
+    margin: 4px 0;
   }
-  #decimal {
-    margin-top: 12px;
+  #decimalTime, #decimalDate {
     font-size: 0.9em;
     color: #555;
   }
