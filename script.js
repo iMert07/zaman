@@ -46,14 +46,33 @@ function calculateCustomDate(now) {
   const day = (dayOfYear % 30) + 1;
 
   // Base12 olarak 6000 yıl ekle (görsel amaçlı), ama zamana dahil etme
-  const yearToDisplay = estimatedYear + 1 + (6 * 12 * 12 * 12); // +6000 base12 = 10368
+  const base12Year = estimatedYear + 1 + (6 * 12 * 12 * 12); // +6000 base12 = 10368
+
+  const base12DayStr = toBase12(day);
+  const base12MonthStr = toBase12(month);
+  const base12YearStr = toBase12(base12Year);
+
+  // Base12 stringini onluk sayıya çevirme fonksiyonu
+  function fromBase12(str) {
+    const digits = "θ123456789ΦΛ";
+    let val = 0;
+    for(let ch of str){
+      val = val * 12 + digits.indexOf(ch);
+    }
+    return val;
+  }
+
+  // Onluk değerler base12 stringlerine göre:
+  const decDay = fromBase12(base12DayStr).toString().padStart(2, '0');
+  const decMonth = fromBase12(base12MonthStr).toString().padStart(2, '0');
+  const decYear = fromBase12(base12YearStr).toString().padStart(5, '0');
 
   return {
-    base12: `${toBase12(day)}.${toBase12(month)}.${toBase12(yearToDisplay)}`,
+    base12: `${base12DayStr}.${base12MonthStr}.${base12YearStr}`,
     decimal: {
-      day: day.toString().padStart(2, '0'),
-      month: month.toString().padStart(2, '0'),
-      year: (estimatedYear + 1).toString().padStart(5, '0'),
+      day: decDay,
+      month: decMonth,
+      year: decYear,
     }
   };
 }
@@ -86,7 +105,7 @@ function updateTime() {
 
   // Tarih
   const customDate = calculateCustomDate(now);
-  
+
   document.getElementById('clock').textContent = base12Clock;
   document.getElementById('date').textContent = customDate.base12;
 
