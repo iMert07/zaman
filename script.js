@@ -9,17 +9,6 @@ function toBase12(n) {
   return result.padStart(2, 'θ');
 }
 
-function fromBase12(str) {
-  const digits = "θ123456789ΦΛ";
-  let result = 0;
-  for (let i = 0; i < str.length; i++) {
-    const val = digits.indexOf(str[i]);
-    if (val === -1) return NaN;
-    result = result * 12 + val;
-  }
-  return result;
-}
-
 function countExtraWeeks(years) {
   let extra = 0;
   for (let i = 1; i <= years; i++) {
@@ -31,7 +20,7 @@ function countExtraWeeks(years) {
 }
 
 function calculateCustomDate(now) {
-  const gregBase = new Date(1071, 2, 21);
+  const gregBase = new Date(1071, 2, 21); // 21 Mart 1071
   const daysPassed = Math.floor((now - gregBase) / (1000 * 60 * 60 * 24));
 
   let estimatedYear = Math.floor(daysPassed / 365);
@@ -56,18 +45,23 @@ function calculateCustomDate(now) {
   const month = Math.floor(dayOfYear / 30) + 1;
   const day = (dayOfYear % 30) + 1;
 
-  const yearToDisplay = estimatedYear + 1 + (6 * 12 * 12 * 12);
+  // Base12 olarak 6000 yıl ekle (görsel amaçlı), ama zamana dahil etme
+  const yearToDisplay = estimatedYear + 1 + (6 * 12 * 12 * 12); // +6000 base12 = 10368
 
-  return `${toBase12(day)}.${toBase12(month)}.${toBase12(yearToDisplay)}`;
-}
-
-function padNumber(num, length) {
-  return num.toString().padStart(length, '0');
+  return {
+    base12: `${toBase12(day)}.${toBase12(month)}.${toBase12(yearToDisplay)}`,
+    decimal: {
+      day: day.toString().padStart(2, '0'),
+      month: month.toString().padStart(2, '0'),
+      year: (estimatedYear + 1).toString().padStart(5, '0'),
+    }
+  };
 }
 
 function updateTime() {
   const now = new Date();
 
+  // Gün 04:30'da başlar
   const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 4, 30, 0);
   if (now < todayStart) {
     todayStart.setDate(todayStart.getDate() - 1);
@@ -80,42 +74,25 @@ function updateTime() {
   const minutes = Math.floor((totalSeconds / 120) % 120);
   const seconds = totalSeconds % 120;
 
-  const base12Hours = toBase12(hours);
-  const base12Minutes = toBase12(minutes);
-  const base12Seconds = toBase12(seconds);
+  // Base12 saat
+  const base12Clock = `${toBase12(hours)}.${toBase12(minutes)}.${toBase12(seconds)}`;
 
-  const base12Time = `${base12Hours}.${base12Minutes}.${base12Seconds}`;
-  const base12Date = calculateCustomDate(now);
+  // Onluk saat (0 padded)
+  const decimalHours = hours.toString().padStart(2, '0');
+  const decimalMinutes = minutes.toString().padStart(3, '0');
+  const decimalSeconds = seconds.toString().padStart(3, '0');
 
-  const [bDay, bMonth, bYear] = base12Date.split('.');
-  const decimalDay = fromBase12(bDay);
-  const decimalMonth = fromBase12(bMonth);
-  const decimalYear = fromBase12(bYear);
+  const decimalClock = `${decimalHours}.${decimalMinutes}.${decimalSeconds}`;
 
-  const decimalTime = `${padNumber(hours, 2)}.${padNumber(minutes, 3)}.${padNumber(seconds, 3)}`;
-  const decimalDate = `${padNumber(decimalDay, 2)}.${padNumber(decimalMonth, 2)}.${padNumber(decimalYear, 4)}`;
+  // Tarih
+  const customDate = calculateCustomDate(now);
+  
+  document.getElementById('clock').textContent = base12Clock;
+  document.getElementById('date').textContent = customDate.base12;
 
-  document.getElementById('clock').textContent = base12Time;
-  document.getElementById('date').textContent = base12Date;
-
-  document.getElementById('decimalTime').textContent = decimalTime;
-  document.getElementById('decimalDate').textContent = decimalDate;
+  document.getElementById('clockDecimal').textContent = decimalClock;
+  document.getElementById('dateDecimal').textContent = `${customDate.decimal.day}.${customDate.decimal.month}.${customDate.decimal.year}`;
 }
-
-const style = document.createElement('style');
-style.textContent = `
-  #clock, #date, #decimalTime, #decimalDate {
-    font-family: monospace;
-    text-align: center;
-    user-select: none;
-    margin: 4px 0;
-  }
-  #decimalTime, #decimalDate {
-    font-size: 0.9em;
-    color: #555;
-  }
-`;
-document.head.appendChild(style);
 
 setInterval(updateTime, 500);
 updateTime();
