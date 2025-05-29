@@ -1,162 +1,73 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Anatolya Sayacı</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
   <style>
-    :root {
-      --box-height: calc((100vh - 80px) / 8); /* Üst boşluk ve başlık için 80px */
-      --value-font-size: calc(var(--box-height) * 0.38);
-      --label-font-size: calc(var(--box-height) * 0.14);
-    }
-    
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    html, body {
-      height: 100%;
-      overflow: hidden;
-    }
-    
     body {
-      font-family: 'Roboto', sans-serif;
-      background: #121212;
-      color: #00d8d6;
+      margin: 0;
+      font-family: sans-serif;
+      background-color: #000;
+      color: #0ff;
       display: flex;
       flex-direction: column;
-      padding: 2px;
-      -webkit-text-size-adjust: none;
-      text-size-adjust: none;
-      touch-action: manipulation;
-    }
-    
-    h1 {
-      font-size: 1rem;
-      text-align: center;
-      margin: 2px 0;
-      padding: 0;
-      height: 20px;
-      flex-shrink: 0;
-    }
-    
-    .scroll-container {
-      flex: 1;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
-    
-    .box {
-      background: #222;
-      border-radius: 6px;
-      text-align: center;
-      width: 100%;
-      margin: 1px 0;
-      height: var(--box-height);
-      min-height: 35px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 1px 3px;
-      flex-shrink: 0;
-    }
-    
-    .label {
-      font-size: var(--label-font-size);
-      color: #888;
-      margin-bottom: 0;
-      line-height: 1.1;
-      height: 30%;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-    }
-    
-    .value {
-      font-size: var(--value-font-size);
-      font-weight: bold;
-      letter-spacing: 0.05em;
-      line-height: 1;
-      height: 70%;
-      display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
+      height: 100vh;
+      box-sizing: border-box;
+      padding: 1rem;
     }
-    
-    @media (min-width: 768px) {
-      :root {
-        --box-height: calc((100vh - 30px) / 4);
-      }
-      
-      body {
-        padding: 5px;
-      }
-      
-      h1 {
-        height: 30px;
-        font-size: 1.2rem;
-        margin-bottom: 5px;
-      }
-      
-      .scroll-container {
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-        align-content: flex-start;
-        gap: 5px;
-      }
-      
+
+    .box {
+      border: 2px solid #0ff;
+      border-radius: 16px;
+      padding: 1rem;
+      margin: 0.5rem;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+      font-size: 6vw;
+      background-color: #111;
+      box-shadow: 0 0 10px #0ff3;
+    }
+
+    .label {
+      font-size: 3vw;
+      color: #888;
+      margin-bottom: 0.3rem;
+    }
+
+    @media (min-width: 600px) {
       .box {
-        width: calc(50% - 3px);
-        margin: 0;
-        height: var(--box-height);
-        min-height: 60px;
+        font-size: 2rem;
       }
-      
       .label {
-        height: 25%;
-      }
-      
-      .value {
-        height: 75%;
-      }
-    }
-    
-    @media (max-height: 600px) and (orientation: portrait) {
-      :root {
-        --box-height: calc((100vh - 60px) / 8);
-        --value-font-size: calc(var(--box-height) * 0.35);
-        --label-font-size: calc(var(--box-height) * 0.12);
-      }
-      
-      h1 {
-        height: 15px;
-        font-size: 0.9rem;
+        font-size: 1rem;
       }
     }
   </style>
 </head>
 <body>
-
-  <h1>Anatolya Sayacı</h1>
-  
-  <div class="scroll-container">
-    <div class="box"><div class="label">Düzine Sayacı</div><div id="clock" class="value">θθ.θθ.θθ</div></div>
-    <div class="box"><div class="label">Düzine Takvimi</div><div id="date" class="value">θθ.θθ.θθθθ</div></div>
-    <div class="box"><div class="label">Deste Sayacı</div><div id="clockDecimal" class="value">00.000.000</div></div>
-    <div class="box"><div class="label">Deste Takvimi</div><div id="dateDecimal" class="value">00.00.00000</div></div>
-    <div class="box"><div class="label">Gregoryen Sayacı</div><div id="clock2" class="value">00.00.00</div></div>
-    <div class="box"><div class="label">Gregoryen Takvimi</div><div id="date2" class="value">00.00.0000</div></div>
-    <div class="box"><div class="label">İslam Sayacı</div><div id="clockDecimal2" class="value">00.00.00</div></div>
-    <div class="box"><div class="label">İslam Takvimi</div><div id="dateDecimal2" class="value">00.00.0000</div></div>
+  <div class="box">
+    <div class="label">Saat (Base12)</div>
+    <div id="clock">θθ.θθ.θθ</div>
+  </div>
+  <div class="box">
+    <div class="label">Tarih (Base12)</div>
+    <div id="date">θθ.θθ.θθθθ</div>
+  </div>
+  <div class="box">
+    <div class="label">Saat (Decimal)</div>
+    <div id="clockDecimal">00.000.000</div>
+  </div>
+  <div class="box">
+    <div class="label">Tarih (Decimal)</div>
+    <div id="dateDecimal">00.00.00000</div>
   </div>
 
-  <script src="script.js"></script>
+  <script>
+    // Buraya JavaScript saat-kodun eklenecek
+  </script>
 </body>
 </html>
