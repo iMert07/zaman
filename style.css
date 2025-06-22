@@ -82,6 +82,8 @@ h1 {
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  min-width: 12ch;
+  white-space: nowrap;
 }
 
 @media (min-width: 768px) {
