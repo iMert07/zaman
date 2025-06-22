@@ -1,12 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
 :root {
-  --box-height-desktop: calc((100vh - 28px) / 4);
-  --box-height-mobile: calc((100vh - 60px) / 8);
-  --value-font-size-desktop: calc(var(--box-height-desktop) * 0.36);
-  --label-font-size-desktop: calc(var(--box-height-desktop) * 0.13);
-  --value-font-size-mobile: calc(var(--box-height-mobile) * 0.34);
-  --label-font-size-mobile: calc(var(--box-height-mobile) * 0.12);
+  --box-height: calc((100vh - 70px) / 8);
+  --value-font-size: calc(var(--box-height) * 0.36);
+  --label-font-size: calc(var(--box-height) * 0.13);
 }
 
 * {
@@ -26,90 +23,92 @@ body {
   color: #00d8d6;
   display: flex;
   flex-direction: column;
-  padding: 0;
-  margin: 0;
-  height: 100vh;
+  padding: 2px;
   -webkit-text-size-adjust: none;
   text-size-adjust: none;
   touch-action: manipulation;
 }
 
 h1 {
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   text-align: center;
   margin: 2px 0;
   padding: 0;
-  height: 20px;
+  height: 18px;
   flex-shrink: 0;
 }
 
-.anatolya-scroll {
-  overflow-y: hidden;
+.scroll-container {
+  flex: 1;
+  overflow-y: auto;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 3px;
   flex-direction: column;
-  height: calc(100vh - 24px);
 }
 
-/* Mobil (tek sütun) */
+/* Mobil (tek sütun, dikey tam sığma) */
 @media (max-width: 767px) {
   :root {
-    --box-height: var(--box-height-mobile);
-    --value-font-size: var(--value-font-size-mobile);
-    --label-font-size: var(--label-font-size-mobile);
+    --box-height: calc((100vh - 70px) / 8);
+    --value-font-size: calc(var(--box-height) * 0.36);
+    --label-font-size: calc(var(--box-height) * 0.13);
   }
 
-  .anatolya-scroll {
+  .scroll-container {
     flex-direction: column;
   }
 
-  .anatolya-box {
+  .box {
     width: 100%;
+    margin: 1px 0;
     height: var(--box-height);
-    min-height: 60px;
-    margin: 0 0 3px 0;
+    min-height: 28px;
     padding: 0 3px;
   }
 
   h1 {
-    font-size: 1rem;
+    font-size: 0.9rem;
     height: 18px;
-    margin: 4px 0;
+    margin: 2px 0;
   }
 }
 
-/* Masaüstü (iki sütun) */
+/* Masaüstü (iki sütun, dikey tam sığma) */
 @media (min-width: 768px) {
   :root {
-    --box-height: var(--box-height-desktop);
-    --value-font-size: var(--value-font-size-desktop);
-    --label-font-size: var(--label-font-size-desktop);
+    --box-height: calc((100vh - 30px) / 4);
+    --value-font-size: calc(var(--box-height) * 0.36);
+    --label-font-size: calc(var(--box-height) * 0.13);
   }
 
-  .anatolya-scroll {
+  body {
+    padding: 5px;
+  }
+
+  h1 {
+    height: 30px;
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+  }
+
+  .scroll-container {
     flex-direction: row;
-    height: calc(100vh - 24px);
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: flex-start;
+    gap: 5px;
+    height: calc(100vh - 40px);
   }
 
-  .anatolya-box {
-    background: #222;
-    border-radius: 5px;
-    text-align: center;
-    width: calc(50% - 4px);
+  .box {
+    width: calc(50% - 3px);
     margin: 0;
     height: var(--box-height);
     min-height: 60px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
     padding: 0 3px;
-    flex-shrink: 0;
   }
 }
 
-.anatolya-label {
+.label {
   font-size: var(--label-font-size);
   color: #888;
   margin-bottom: 0;
@@ -121,7 +120,7 @@ h1 {
   overflow: hidden;
 }
 
-.anatolya-value {
+.value {
   font-size: var(--value-font-size);
   font-weight: bold;
   letter-spacing: 0.05em;
@@ -131,6 +130,24 @@ h1 {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  min-width: 12ch;
-  white-space: nowrap;
+}
+
+/* Küçük dikey ekranlar için */
+@media (max-height: 700px) and (orientation: portrait) {
+  :root {
+    --box-height: calc((100vh - 60px) / 8);
+    --value-font-size: calc(var(--box-height) * 0.34);
+    --label-font-size: calc(var(--box-height) * 0.12);
+  }
+
+  h1 {
+    height: 15px;
+    font-size: 0.75rem;
+    margin: 1px 0;
+  }
+
+  .box {
+    min-height: 26px;
+    padding: 0 2px;
+  }
 }
