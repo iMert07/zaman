@@ -38,46 +38,57 @@ h1 {
   flex-shrink: 0;
 }
 
-.scroll-container {
+.anatolya-scroll {
   flex: 1;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
 }
 
-/* Mobil (tek sütun, dikey tam sığma) */
-@media (max-width: 767px) {
-  :root {
-    --box-height: calc((100vh - 70px) / 8);
-    --value-font-size: calc(var(--box-height) * 0.36);
-    --label-font-size: calc(var(--box-height) * 0.13);
-  }
-
-  .scroll-container {
-    flex-direction: column;
-  }
-
-  .box {
-    width: 100%;
-    margin: 1px 0;
-    height: var(--box-height);
-    min-height: 28px;
-    padding: 0 3px;
-  }
-
-  h1 {
-    font-size: 0.9rem;
-    height: 18px;
-    margin: 2px 0;
-  }
+.anatolya-box {
+  background: #222;
+  border-radius: 5px;
+  text-align: center;
+  width: 100%;
+  margin: 1px 0;
+  height: var(--box-height);
+  min-height: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 3px;
+  flex-shrink: 0;
 }
 
-/* Masaüstü (iki sütun, dikey tam sığma) */
+.anatolya-label {
+  font-size: var(--label-font-size);
+  color: #888;
+  margin-bottom: 0;
+  line-height: 1.1;
+  height: 28%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.anatolya-value {
+  font-size: var(--value-font-size);
+  font-weight: bold;
+  letter-spacing: 0.05em;
+  line-height: 1;
+  height: 72%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  min-width: 12ch;
+  white-space: nowrap;
+}
+
 @media (min-width: 768px) {
   :root {
     --box-height: calc((100vh - 30px) / 4);
-    --value-font-size: calc(var(--box-height) * 0.36);
-    --label-font-size: calc(var(--box-height) * 0.13);
   }
 
   body {
@@ -90,49 +101,30 @@ h1 {
     margin-bottom: 5px;
   }
 
-  .scroll-container {
+  .anatolya-scroll {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
     align-content: flex-start;
     gap: 5px;
-    height: calc(100vh - 40px);
   }
 
-  .box {
+  .anatolya-box {
     width: calc(50% - 3px);
     margin: 0;
     height: var(--box-height);
     min-height: 60px;
-    padding: 0 3px;
+  }
+
+  .anatolya-label {
+    height: 25%;
+  }
+
+  .anatolya-value {
+    height: 75%;
   }
 }
 
-.label {
-  font-size: var(--label-font-size);
-  color: #888;
-  margin-bottom: 0;
-  line-height: 1.1;
-  height: 28%;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  overflow: hidden;
-}
-
-.value {
-  font-size: var(--value-font-size);
-  font-weight: bold;
-  letter-spacing: 0.05em;
-  line-height: 1;
-  height: 72%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
-/* Küçük dikey ekranlar için */
 @media (max-height: 700px) and (orientation: portrait) {
   :root {
     --box-height: calc((100vh - 60px) / 8);
@@ -146,7 +138,7 @@ h1 {
     margin: 1px 0;
   }
 
-  .box {
+  .anatolya-box {
     min-height: 26px;
     padding: 0 2px;
   }
