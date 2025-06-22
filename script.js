@@ -172,5 +172,5 @@ function updateTime() {
   document.getElementById('dateDecimal2').textContent = islamic.date;
 }
 
-setInterval(updateTime, 500);
+setInterval(updateTime, 100);
 updateTime();
