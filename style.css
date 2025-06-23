@@ -7,16 +7,16 @@
   --gap: 2px;
   --total-gap: calc((var(--box-count) - 1) * var(--gap));
 
-  /* MOBİL İÇİN KULLANILACAK AYARLAR */
-  --box-min-height-mobile: 80px;
-  --box-flex-grow-mobile: 1;
-  --value-font-size-min-mobile: 18px;
-  --value-font-size-max-mobile: 40px;
-  --label-font-size-min-mobile: 8px;
-  --label-font-size-max-mobile: 18px;
+  /* MOBİL DİKEY İÇİN KULLANILACAK AYARLAR */
+  --box-min-height-mobile-portrait: 80px;
+  --box-flex-grow-mobile-portrait: 1;
+  --value-font-size-min-mobile-portrait: 18px;
+  --value-font-size-max-mobile-portrait: 40px;
+  --label-font-size-min-mobile-portrait: 8px;
+  --label-font-size-max-mobile-portrait: 18px;
 
-  /* ORİJİNAL BİLGİSAYAR İÇİN KORUNAN AYARLAR */
-  --box-height-desktop: calc((100vh - 30px - 20px) / 4);
+  /* MOBİL YATAY VE BİLGİSAYAR İÇİN ORİJİNAL KORUNAN AYARLAR */
+  --box-height-responsive: calc((100vh - 30px - 20px) / 4); /* Bu hem yatay mobil hem de bilgisayar için kullanılacak */
   --header-height-desktop: 30px;
   --h1-font-size-desktop: 1.2rem;
 }
@@ -56,11 +56,11 @@ h1 {
 .anatolya-scroll {
   flex: 1; /* Kalan dikey alanı kaplar */
   display: flex;
-  flex-direction: column; /* Mobil için varsayılan olarak dikey sıralama */
+  flex-direction: column; /* Mobil dikey için varsayılan olarak dikey sıralama */
   gap: var(--gap);
   justify-content: flex-start;
   
-  /* MOBİL CİHAZLAR İÇİN KAYDIRMA AYARI (GENEL VE YATAY MOD DAHİL) */
+  /* MOBİL DİKEY İÇİN KAYDIRMA AYARI */
   overflow-y: auto; /* İçerik sığmadığında dikey kaydırma çubuğu belirir */
   overflow-x: hidden; /* Yatay kaydırmayı engeller */
   -webkit-overflow-scrolling: touch; /* iOS cihazlarda daha akıcı kaydırma */
@@ -71,9 +71,9 @@ h1 {
   border-radius: 5px;
   text-align: center;
   width: 100%;
-  /* MOBİL KUTU AYARLARI */
-  min-height: var(--box-min-height-mobile);
-  flex-grow: var(--box-flex-grow-mobile);
+  /* MOBİL DİKEY KUTU AYARLARI */
+  min-height: var(--box-min-height-mobile-portrait);
+  flex-grow: var(--box-flex-grow-mobile-portrait);
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
@@ -83,8 +83,8 @@ h1 {
 }
 
 .anatolya-label {
-  /* MOBİL LABEL FONT BOYUTU */
-  font-size: clamp(var(--label-font-size-min-mobile), 3vw, var(--label-font-size-max-mobile));
+  /* MOBİL DİKEY LABEL FONT BOYUTU */
+  font-size: clamp(var(--label-font-size-min-mobile-portrait), 3vw, var(--label-font-size-max-mobile-portrait));
   color: #888;
   line-height: 1.1;
   height: 28%;
@@ -97,8 +97,8 @@ h1 {
 }
 
 .anatolya-value {
-  /* MOBİL VALUE FONT BOYUTU */
-  font-size: clamp(var(--value-font-size-min-mobile), 7vw, var(--value-font-size-max-mobile));
+  /* MOBİL DİKEY VALUE FONT BOYUTU */
+  font-size: clamp(var(--value-font-size-min-mobile-portrait), 7vw, var(--value-font-size-max-mobile-portrait));
   font-weight: bold;
   letter-spacing: 0.05em;
   line-height: 1;
@@ -112,13 +112,57 @@ h1 {
   text-overflow: ellipsis;
 }
 
-/* --- BİLGİSAYAR EKRANI İÇİN (768px ve üzeri) ORİJİNAL AYARLAR --- */
-/* Bu medya sorgusunu sadece pointer tipi "fine" (fare gibi hassas) ve hover yeteneği olan cihazlar için hedefliyoruz. */
-/* Bu, genellikle dokunmatik olmayan bilgisayarları kapsar. */
+/* --- MOBİL YATAY EKRAN AYARLARI (tabletler dahil) --- */
+/* Geniş ekranlı ancak dokunmatik ve kaba işaretleyicili cihazlar (mobil yatay, bazı tabletler) */
+@media (min-width: 600px) and (hover: none) and (pointer: coarse) {
+  :root {
+    --box-height: var(--box-height-responsive);
+    --value-font-size: calc(var(--box-height) * 0.36);
+    --label-font-size: calc(var(--box-height) * 0.13);
+  }
+
+  h1 {
+    height: var(--header-height-desktop);
+    font-size: var(--h1-font-size-desktop);
+    margin-bottom: 5px;
+  }
+
+  .anatolya-scroll {
+    flex-direction: row; /* Yatayda iki sütun için */
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: flex-start;
+    gap: 6px;
+    overflow-y: auto; /* İhtiyaç halinde kaydırma çubuğu belirir */
+  }
+
+  .anatolya-box {
+    width: calc(50% - 3px); /* İki sütun için %50 genişlik */
+    height: var(--box-height);
+    min-height: 60px;
+    flex-grow: 0;
+  }
+
+  .anatolya-label {
+    font-size: var(--label-font-size);
+    height: 25%;
+    white-space: normal;
+    text-overflow: clip;
+  }
+
+  .anatolya-value {
+    font-size: var(--value-font-size);
+    height: 75%;
+    white-space: normal;
+    text-overflow: clip;
+  }
+}
+
+/* --- BİLGİSAYAR EKRANI İÇİN (768px ve üzeri) AYARLAR --- */
+/* Sadece fare gibi hassas işaretleyicili ve hover yeteneği olan cihazlar (masaüstü/laptop) */
 @media (min-width: 768px) and (hover: hover) and (pointer: fine) {
   :root {
-    /* Bilgisayar görünümü için orijinal kodunuzdaki root değişkenleri */
-    --box-height: var(--box-height-desktop);
+    --box-height: var(--box-height-responsive); /* Bilgisayar için de bu yüksekliği kullan */
     --value-font-size: calc(var(--box-height) * 0.36);
     --label-font-size: calc(var(--box-height) * 0.13);
   }
@@ -136,7 +180,7 @@ h1 {
     align-content: flex-start;
     gap: 6px;
     /* BİLGİSAYARDA TAM EKRANDA KAYDIRMA ÇUBUĞUNU GİZLE */
-    overflow-y: hidden;
+    overflow-y: hidden; 
   }
 
   .anatolya-box {
