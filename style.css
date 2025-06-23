@@ -6,7 +6,7 @@
   --padding-vertical: 4px;
   --gap: 2px;
   --total-gap: calc((var(--box-count) - 1) * var(--gap));
-  --available-height: calc(100vh - var(--header-height) - var(--padding-vertical) - var(--total-gap));
+  --available-height: calc((var(--real-vh, 1vh) * 100) - var(--header-height) - var(--padding-vertical) - var(--total-gap));
   --box-height: calc(var(--available-height) / var(--box-count));
   --value-font-size: calc(var(--box-height) * 0.36);
   --label-font-size: calc(var(--box-height) * 0.13);
