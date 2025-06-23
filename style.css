@@ -3,13 +3,13 @@
 :root {
   --box-count: 8;
   --header-height: 18px;
-  --gap: 6px; /* kutular arası boşluk */
-  --margin-vertical: 8px; /* body için üst-alt margin */
+  --padding-vertical: 4px;
+  --gap: 4px;
   --total-gap: calc((var(--box-count) - 1) * var(--gap));
-  --available-height: calc(100vh - var(--header-height) - (2 * var(--margin-vertical)) - var(--total-gap));
+  --available-height: calc(100vh - var(--header-height) - var(--padding-vertical) - var(--total-gap));
   --box-height: calc(var(--available-height) / var(--box-count));
-  --value-font-size: calc(var(--box-height) * 0.36);
-  --label-font-size: calc(var(--box-height) * 0.13);
+  --value-font-size: calc(var(--box-height) * 0.32);
+  --label-font-size: calc(var(--box-height) * 0.11);
 }
 
 * {
@@ -19,8 +19,7 @@
 }
 
 html, body {
-  height: 100vh;
-  margin: var(--margin-vertical) 0;
+  height: 100%;
   overflow: hidden;
 }
 
@@ -30,7 +29,7 @@ body {
   color: #00d8d6;
   display: flex;
   flex-direction: column;
-  /* padding yerine margin kullandık */
+  padding: 2px 2px;
   -webkit-text-size-adjust: none;
   text-size-adjust: none;
   touch-action: manipulation;
@@ -39,19 +38,20 @@ body {
 h1 {
   font-size: 0.9rem;
   text-align: center;
-  margin: 0 0 8px 0;
+  margin: 2px 0;
   padding: 0;
   height: var(--header-height);
   flex-shrink: 0;
 }
 
 .anatolya-scroll {
-  flex: 1 1 auto;
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: var(--gap);
-  height: calc(100vh - var(--header-height) - (2 * var(--margin-vertical)) - var(--total-gap));
+  justify-content: space-between;
   overflow: hidden;
+  padding: 0 2px;
 }
 
 .anatolya-box {
@@ -63,7 +63,7 @@ h1 {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 0 3px;
+  padding: 0 5px;
   flex-shrink: 0;
 }
 
@@ -96,24 +96,23 @@ h1 {
   :root {
     --box-count: 4;
     --header-height: 30px;
+    --padding-vertical: 10px;
     --gap: 6px;
-    --margin-vertical: 10px;
     --total-gap: calc((var(--box-count) - 1) * var(--gap));
-    --available-height: calc(100vh - var(--header-height) - (2 * var(--margin-vertical)) - var(--total-gap));
+    --available-height: calc(100vh - var(--header-height) - var(--padding-vertical) - var(--total-gap));
     --box-height: calc(var(--available-height) / var(--box-count));
-    --value-font-size: calc(var(--box-height) * 0.36);
-    --label-font-size: calc(var(--box-height) * 0.13);
+    --value-font-size: calc(var(--box-height) * 0.4);
+    --label-font-size: calc(var(--box-height) * 0.12);
   }
 
   body {
-    padding: 0;
-    margin: var(--margin-vertical) 0;
+    padding: 5px;
   }
 
   h1 {
     height: var(--header-height);
     font-size: 1.2rem;
-    margin-bottom: var(--margin-vertical);
+    margin-bottom: 5px;
   }
 
   .anatolya-scroll {
@@ -122,13 +121,14 @@ h1 {
     justify-content: center;
     align-content: flex-start;
     gap: var(--gap);
-    height: calc(100vh - var(--header-height) - (2 * var(--margin-vertical)) - var(--total-gap));
+    padding: 0 5px;
   }
 
   .anatolya-box {
-    width: calc(50% - (var(--gap) / 2));
+    width: calc(50% - 4px);
     height: var(--box-height);
-    min-height: 60px;
+    min-height: 50px;
+    padding: 0 8px;
   }
 
   .anatolya-label {
@@ -143,24 +143,24 @@ h1 {
 @media (max-height: 700px) and (orientation: portrait) {
   :root {
     --box-count: 8;
-    --header-height: 15px;
-    --gap: 6px;
-    --margin-vertical: 6px;
+    --header-height: 18px;
+    --padding-vertical: 4px;
+    --gap: 3px;
     --total-gap: calc((var(--box-count) - 1) * var(--gap));
-    --available-height: calc(100vh - var(--header-height) - (2 * var(--margin-vertical)) - var(--total-gap));
+    --available-height: calc(100vh - var(--header-height) - var(--padding-vertical) - var(--total-gap));
     --box-height: calc(var(--available-height) / var(--box-count));
-    --value-font-size: calc(var(--box-height) * 0.34);
-    --label-font-size: calc(var(--box-height) * 0.12);
+    --value-font-size: calc(var(--box-height) * 0.3);
+    --label-font-size: calc(var(--box-height) * 0.1);
   }
 
   h1 {
     height: var(--header-height);
     font-size: 0.75rem;
-    margin: 0 0 6px 0;
+    margin: 1px 0;
   }
 
   .anatolya-box {
     min-height: 26px;
-    padding: 0 2px;
+    padding: 0 3px;
   }
 }
