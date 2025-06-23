@@ -1,7 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
 :root {
-  --box-height: calc((100vh - 70px) / 8);
+  --box-count: 8;
+  --header-height: 18px;
+  --padding-vertical: 4px;
+  --gap: 2px;
+  --total-gap: calc((var(--box-count) - 1) * var(--gap));
+  --available-height: calc(100vh - var(--header-height) - var(--padding-vertical) - var(--total-gap));
+  --box-height: calc(var(--available-height) / var(--box-count));
   --value-font-size: calc(var(--box-height) * 0.36);
   --label-font-size: calc(var(--box-height) * 0.13);
 }
@@ -23,7 +29,7 @@ body {
   color: #00d8d6;
   display: flex;
   flex-direction: column;
-  padding: 2px;
+  padding: 2px 2px;
   -webkit-text-size-adjust: none;
   text-size-adjust: none;
   touch-action: manipulation;
@@ -34,16 +40,17 @@ h1 {
   text-align: center;
   margin: 2px 0;
   padding: 0;
-  height: 18px;
+  height: var(--header-height);
   flex-shrink: 0;
 }
 
 .anatolya-scroll {
   flex: 1;
-  overflow-y: hidden; /* Kaydırmayı engelledik */
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Boşlukları eşit dağıtır */
+  gap: var(--gap);
+  justify-content: space-between;
+  overflow: hidden;
 }
 
 .anatolya-box {
@@ -52,7 +59,6 @@ h1 {
   text-align: center;
   width: 100%;
   height: var(--box-height);
-  min-height: 28px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -63,7 +69,6 @@ h1 {
 .anatolya-label {
   font-size: var(--label-font-size);
   color: #888;
-  margin-bottom: 0;
   line-height: 1.1;
   height: 28%;
   display: flex;
@@ -88,11 +93,7 @@ h1 {
 
 @media (min-width: 768px) {
   :root {
-    --box-height: calc((100vh - 30px) / 4 - 4px); /* Burada küçültme yapıldı */
-  }
-
-  body {
-    padding: 5px;
+    --box-height: calc((100vh - 30px - 20px) / 4);
   }
 
   h1 {
@@ -106,12 +107,11 @@ h1 {
     flex-wrap: wrap;
     justify-content: center;
     align-content: flex-start;
-    gap: 4px; /* Eskiden 5px’ti, azaltıldı */
+    gap: 6px;
   }
 
   .anatolya-box {
-    width: calc(50% - 2px); /* Eskiden 50% - 3px’ti */
-    height: var(--box-height);
+    width: calc(50% - 3px);
     min-height: 60px;
   }
 
@@ -121,24 +121,5 @@ h1 {
 
   .anatolya-value {
     height: 75%;
-  }
-}
-
-@media (max-height: 700px) and (orientation: portrait) {
-  :root {
-    --box-height: calc((100vh - 60px) / 8);
-    --value-font-size: calc(var(--box-height) * 0.34);
-    --label-font-size: calc(var(--box-height) * 0.12);
-  }
-
-  h1 {
-    height: 15px;
-    font-size: 0.75rem;
-    margin: 1px 0;
-  }
-
-  .anatolya-box {
-    min-height: 26px;
-    padding: 0 2px;
   }
 }
