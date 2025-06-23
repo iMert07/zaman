@@ -7,15 +7,19 @@
   --gap: 2px;
   --total-gap: calc((var(--box-count) - 1) * var(--gap));
 
-  /* SADECE MOBİL İÇİN KULLANILACAK MİNİMUM YÜKSEKLİK VE ESNEKLİK */
+  /* MOBİL İÇİN YENİ TANIMLANAN AYARLAR */
   --box-min-height-mobile: 80px;
   --box-flex-grow-mobile: 1;
-
-  /* SADECE MOBİL İÇİN KULLANILACAK MİN/MAX FONT BOYUTLARI */
   --value-font-size-min-mobile: 18px;
   --value-font-size-max-mobile: 40px;
   --label-font-size-min-mobile: 8px;
   --label-font-size-max-mobile: 18px;
+
+  /* ORİJİNAL BİLGİSAYAR İÇİN KORUNAN AYARLAR */
+  --box-height-desktop: calc((100vh - 30px - 20px) / 4); /* Orijinal bilgisayar box-height */
+  --header-height-desktop: 30px; /* Orijinal bilgisayar header-height */
+  --h1-font-size-desktop: 1.2rem; /* Orijinal bilgisayar h1 font-size */
+  /* Orjinal label ve value font-size'ları da media sorgusu içinde tekrar tanımlanacak */
 }
 
 * {
@@ -26,7 +30,7 @@
 
 html, body {
   height: 100%;
-  overflow: hidden; /* Genel kaydırmayı engelle, .anatolya-scroll içinde yöneteceğiz */
+  overflow: hidden; /* Genel kaydırmayı engelle */
 }
 
 body {
@@ -36,9 +40,9 @@ body {
   display: flex;
   flex-direction: column;
   padding: 2px 2px;
-  -webkit-text-size-adjust: none; /* Metin boyutunun otomatik ayarlanmasını engelle */
+  -webkit-text-size-adjust: none;
   text-size-adjust: none;
-  touch-action: manipulation; /* Dokunma hareketlerinin varsayılan davranışını değiştirir */
+  touch-action: manipulation;
 }
 
 h1 {
@@ -47,18 +51,18 @@ h1 {
   margin: 2px 0;
   padding: 0;
   height: var(--header-height);
-  flex-shrink: 0; /* Başlığın küçülmesini engelle */
+  flex-shrink: 0;
 }
 
 .anatolya-scroll {
-  flex: 1; /* Mevcut alanı doldur */
+  flex: 1;
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* Mobil için dikey sıralama */
   gap: var(--gap);
-  justify-content: flex-start; /* Kutuların yukarıdan başlamasını sağlar */
-  overflow-y: auto; /* Dikey kaydırmaya izin ver */
-  overflow-x: hidden; /* Yatay kaydırmayı engelle */
-  -webkit-overflow-scrolling: touch; /* iOS'ta akıcı kaydırma */
+  justify-content: flex-start;
+  overflow-y: auto; /* Mobil için dikey kaydırma */
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 
 .anatolya-box {
@@ -66,19 +70,19 @@ h1 {
   border-radius: 5px;
   text-align: center;
   width: 100%;
-  /* MOBİL İÇİN ESNEK AYARLAR */
-  min-height: var(--box-min-height-mobile); /* Minimum yükseklik */
-  flex-grow: var(--box-flex-grow-mobile); /* Boş alanı eşit doldur */
-  flex-shrink: 0; /* Kutunun küçülmesini engelle */
+  /* MOBİL KUTU AYARLARI */
+  min-height: var(--box-min-height-mobile);
+  flex-grow: var(--box-flex-grow-mobile);
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 0 3px;
-  box-sizing: border-box; /* Padding ve border'ın genişliğe dahil olmasını sağlar */
+  box-sizing: border-box;
 }
 
 .anatolya-label {
-  /* MOBİL İÇİN CLAMP() İLE DİNAMİK FONT BOYUTU */
+  /* MOBİL LABEL FONT BOYUTU */
   font-size: clamp(var(--label-font-size-min-mobile), 3vw, var(--label-font-size-max-mobile));
   color: #888;
   line-height: 1.1;
@@ -87,12 +91,12 @@ h1 {
   align-items: flex-end;
   justify-content: center;
   overflow: hidden;
-  text-overflow: ellipsis; /* Taşan metni ... ile göster */
-  white-space: nowrap; /* Metnin tek satırda kalmasını sağlar */
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .anatolya-value {
-  /* MOBİL İÇİN CLAMP() İLE DİNAMİK FONT BOYUTU */
+  /* MOBİL VALUE FONT BOYUTU */
   font-size: clamp(var(--value-font-size-min-mobile), 7vw, var(--value-font-size-max-mobile));
   font-weight: bold;
   letter-spacing: 0.05em;
@@ -102,49 +106,57 @@ h1 {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  min-width: 12ch; /* Minimum karakter genişliği */
+  min-width: 12ch;
   white-space: nowrap;
-  text-overflow: ellipsis; /* Taşan metni ... ile göster */
+  text-overflow: ellipsis;
 }
 
-/* --- ORİJİNAL BİLGİSAYAR (DESKTOP) KISMI AYNEN GERİ GETİRİLDİ --- */
+/* --- BİLGİSAYAR EKRANI İÇİN (768px ve üzeri) ORİJİNAL KODUNUZDAN AYARLAR --- */
 @media (min-width: 768px) {
   :root {
-    /* Orijinal bilgisayar hesaplamaları */
-    --box-height: calc((100vh - 30px - 20px) / 4);
+    /* Bilgisayar görünümü için orijinal kodunuzdaki root değişkenleri */
+    --box-height: var(--box-height-desktop); /* Orijinal bilgisayar yüksekliği */
+    /* Aşağıdaki iki değişken orijinal kodunuzda doğrudan kullanıldığı için geri getirildi */
+    --value-font-size: calc(var(--box-height) * 0.36);
+    --label-font-size: calc(var(--box-height) * 0.13);
   }
 
   h1 {
-    height: 30px;
-    font-size: 1.2rem;
+    height: var(--header-height-desktop); /* Orijinal bilgisayar header yüksekliği */
+    font-size: var(--h1-font-size-desktop); /* Orijinal bilgisayar h1 font-size */
     margin-bottom: 5px;
   }
 
   .anatolya-scroll {
-    flex-direction: row;
+    flex-direction: row; /* Bilgisayar için yatay sıralama */
     flex-wrap: wrap;
     justify-content: center;
     align-content: flex-start;
     gap: 6px;
-    /* Bilgisayar görünümünde zaten sığdığı varsayıldığından overflow-y: auto'ya gerek yok */
-    overflow-y: hidden; /* Kaydırmayı kapat */
+    overflow-y: hidden; /* Bilgisayar için kaydırma yok */
   }
 
   .anatolya-box {
     width: calc(50% - 3px);
-    height: var(--box-height); /* Orijinal --box-height kullanılıyor */
-    min-height: 60px; /* Orijinal min-height */
-    /* Bilgisayar modunda flex-grow'a gerek yok, sabit yükseklik kullanılıyor */
-    flex-grow: 0;
+    height: var(--box-height); /* Orijinal bilgisayar box-height kullanılıyor */
+    min-height: 60px;
+    /* Bilgisayar modunda esneklik değişkenlerine gerek yok, flex-grow: 0 varsayılan */
+    flex-grow: 0; /* Küçülmesini engeller, sabit kalır */
   }
 
   .anatolya-label {
-    font-size: var(--label-font-size); /* Orijinal --label-font-size kullanılıyor */
+    font-size: var(--label-font-size); /* Orijinal bilgisayar label font-size */
     height: 25%;
+    /* Metin taşması yönetimi mobil için bırakıldı, bilgisayarda bu varsayılan olarak daha az sorun yaratır */
+    white-space: normal; /* Normal metin sarımı (wrap) */
+    text-overflow: clip; /* Kısaltmayı kaldır */
   }
 
   .anatolya-value {
-    font-size: var(--value-font-size); /* Orijinal --value-font-size kullanılıyor */
+    font-size: var(--value-font-size); /* Orijinal bilgisayar value font-size */
     height: 75%;
+    /* Metin taşması yönetimi mobil için bırakıldı */
+    white-space: normal; /* Normal metin sarımı (wrap) */
+    text-overflow: clip; /* Kısaltmayı kaldır */
   }
 }
