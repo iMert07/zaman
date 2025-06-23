@@ -7,7 +7,7 @@
   --gap: 2px;
   --total-gap: calc((var(--box-count) - 1) * var(--gap));
 
-  /* MOBİL İÇİN YENİ TANIMLANAN AYARLAR */
+  /* MOBİL İÇİN KULLANILACAK AYARLAR */
   --box-min-height-mobile: 80px;
   --box-flex-grow-mobile: 1;
   --value-font-size-min-mobile: 18px;
@@ -16,9 +16,9 @@
   --label-font-size-max-mobile: 18px;
 
   /* ORİJİNAL BİLGİSAYAR İÇİN KORUNAN AYARLAR */
-  --box-height-desktop: calc((100vh - 30px - 20px) / 4); /* Orijinal bilgisayar box-height */
-  --header-height-desktop: 30px; /* Orijinal bilgisayar header-height */
-  --h1-font-size-desktop: 1.2rem; /* Orijinal bilgisayar h1 font-size */
+  --box-height-desktop: calc((100vh - 30px - 20px) / 4);
+  --header-height-desktop: 30px;
+  --h1-font-size-desktop: 1.2rem;
 }
 
 * {
@@ -29,7 +29,7 @@
 
 html, body {
   height: 100%;
-  overflow: hidden; /* Genel kaydırmayı engelle */
+  overflow: hidden; /* Genel sayfa kaydırmasını engeller */
 }
 
 body {
@@ -54,15 +54,16 @@ h1 {
 }
 
 .anatolya-scroll {
-  flex: 1;
+  flex: 1; /* Kalan dikey alanı kaplar */
   display: flex;
-  flex-direction: column; /* Mobil için dikey sıralama */
+  flex-direction: column; /* Mobil için varsayılan olarak dikey sıralama */
   gap: var(--gap);
   justify-content: flex-start;
-  /* HER İKİ GÖRÜNÜM İÇİN KAYDIRMA AYARI BURADA */
-  overflow-y: auto; /* İçeriğe ihtiyaç duyulduğunda dikey kaydırma çubuğu belirir */
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
+  
+  /* MOBİL VE BİLGİSAYAR İÇİN ORTAK KAYDIRMA AYARI */
+  overflow-y: auto; /* İçerik sığmadığında dikey kaydırma çubuğu belirir */
+  overflow-x: hidden; /* Yatay kaydırmayı engeller */
+  -webkit-overflow-scrolling: touch; /* iOS cihazlarda daha akıcı kaydırma */
 }
 
 .anatolya-box {
@@ -111,18 +112,18 @@ h1 {
   text-overflow: ellipsis;
 }
 
-/* --- BİLGİSAYAR EKRANI İÇİN (768px ve üzeri) ORİJİNAL KODUNUZDAN AYARLAR --- */
+/* --- BİLGİSAYAR EKRANI İÇİN (768px ve üzeri) ORİJİNAL AYARLAR --- */
 @media (min-width: 768px) {
   :root {
     /* Bilgisayar görünümü için orijinal kodunuzdaki root değişkenleri */
-    --box-height: var(--box-height-desktop); /* Orijinal bilgisayar yüksekliği */
+    --box-height: var(--box-height-desktop);
     --value-font-size: calc(var(--box-height) * 0.36);
     --label-font-size: calc(var(--box-height) * 0.13);
   }
 
   h1 {
-    height: var(--header-height-desktop); /* Orijinal bilgisayar header yüksekliği */
-    font-size: var(--h1-font-size-desktop); /* Orijinal bilgisayar h1 font-size */
+    height: var(--header-height-desktop);
+    font-size: var(--h1-font-size-desktop);
     margin-bottom: 5px;
   }
 
@@ -132,26 +133,25 @@ h1 {
     justify-content: center;
     align-content: flex-start;
     gap: 6px;
-    /* BURADA BİLGİSAYAR İÇİN KAYDIRMA AYARI */
-    overflow-y: auto; /* Bilgisayar görünümünde de ihtiyaç duyulduğunda kaydırma belirir */
+    /* overflow-y: auto; burada tekrar tanımlamaya gerek yok, genel ayar zaten var. */
   }
 
   .anatolya-box {
     width: calc(50% - 3px);
-    height: var(--box-height); /* Orijinal bilgisayar box-height kullanılıyor */
+    height: var(--box-height);
     min-height: 60px;
     flex-grow: 0;
   }
 
   .anatolya-label {
-    font-size: var(--label-font-size); /* Orijinal bilgisayar label font-size */
+    font-size: var(--label-font-size);
     height: 25%;
     white-space: normal;
     text-overflow: clip;
   }
 
   .anatolya-value {
-    font-size: var(--value-font-size); /* Orijinal bilgisayar value font-size */
+    font-size: var(--value-font-size);
     height: 75%;
     white-space: normal;
     text-overflow: clip;
