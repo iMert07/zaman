@@ -1,7 +1,14 @@
+<style>
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
 :root {
-  --box-height: calc((100vh - 72px) / 8); /* Mobil varsayılan */
+  --box-count: 8;
+  --header-height: 18px;
+  --padding-total: 4px; /* body padding-top + padding-bottom */
+  --gap-between-boxes: 2px;
+  --total-gap: calc((var(--box-count) - 1) * var(--gap-between-boxes));
+  --available-height: calc(100vh - var(--header-height) - var(--padding-total) - var(--total-gap));
+  --box-height: calc(var(--available-height) / var(--box-count));
   --value-font-size: calc(var(--box-height) * 0.36);
   --label-font-size: calc(var(--box-height) * 0.13);
 }
@@ -34,7 +41,7 @@ h1 {
   text-align: center;
   margin: 2px 0;
   padding: 0;
-  height: 18px;
+  height: var(--header-height);
   flex-shrink: 0;
 }
 
@@ -43,6 +50,7 @@ h1 {
   overflow-y: hidden;
   display: flex;
   flex-direction: column;
+  gap: var(--gap-between-boxes);
   justify-content: space-between;
 }
 
@@ -52,13 +60,11 @@ h1 {
   text-align: center;
   width: 100%;
   height: var(--box-height);
-  min-height: 26px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 0 3px;
   flex-shrink: 0;
-  margin-bottom: 2px; /* Mobilde kutular arası boşluk */
 }
 
 .anatolya-label {
@@ -86,14 +92,9 @@ h1 {
   white-space: nowrap;
 }
 
-/* Bilgisayar görünümü */
 @media (min-width: 768px) {
   :root {
-    --box-height: calc((100vh - 30px) / 4 - 4px);
-  }
-
-  body {
-    padding: 5px;
+    --box-height: calc((100vh - 30px - 16px) / 4); /* 4 kutuya böl, toplam boşluklar dahil */
   }
 
   h1 {
@@ -107,14 +108,12 @@ h1 {
     flex-wrap: wrap;
     justify-content: center;
     align-content: flex-start;
-    gap: 4px;
+    gap: 5px;
   }
 
   .anatolya-box {
-    width: calc(50% - 2px);
-    height: var(--box-height);
+    width: calc(50% - 3px);
     min-height: 60px;
-    margin-bottom: 0;
   }
 
   .anatolya-label {
@@ -125,23 +124,4 @@ h1 {
     height: 75%;
   }
 }
-
-/* Küçük mobil ekranlar */
-@media (max-height: 700px), (orientation: portrait) {
-  :root {
-    --box-height: calc((100vh - 80px) / 8); /* Daha dar kutular */
-    --value-font-size: calc(var(--box-height) * 0.33);
-    --label-font-size: calc(var(--box-height) * 0.12);
-  }
-
-  h1 {
-    height: 15px;
-    font-size: 0.75rem;
-    margin: 1px 0;
-  }
-
-  .anatolya-box {
-    padding: 0 2px;
-    margin-bottom: 2px;
-  }
-}
+</style>
