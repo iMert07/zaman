@@ -19,7 +19,6 @@
   --box-height-desktop: calc((100vh - 30px - 20px) / 4); /* Orijinal bilgisayar box-height */
   --header-height-desktop: 30px; /* Orijinal bilgisayar header-height */
   --h1-font-size-desktop: 1.2rem; /* Orijinal bilgisayar h1 font-size */
-  /* Orjinal label ve value font-size'ları da media sorgusu içinde tekrar tanımlanacak */
 }
 
 * {
@@ -60,7 +59,8 @@ h1 {
   flex-direction: column; /* Mobil için dikey sıralama */
   gap: var(--gap);
   justify-content: flex-start;
-  overflow-y: auto; /* Mobil için dikey kaydırma */
+  /* BURADA KAYDIRMA AYARLANIYOR */
+  overflow-y: auto; /* Sadece içeriğe ihtiyaç duyulduğunda dikey kaydırma çubuğu belirir */
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
 }
@@ -116,7 +116,6 @@ h1 {
   :root {
     /* Bilgisayar görünümü için orijinal kodunuzdaki root değişkenleri */
     --box-height: var(--box-height-desktop); /* Orijinal bilgisayar yüksekliği */
-    /* Aşağıdaki iki değişken orijinal kodunuzda doğrudan kullanıldığı için geri getirildi */
     --value-font-size: calc(var(--box-height) * 0.36);
     --label-font-size: calc(var(--box-height) * 0.13);
   }
@@ -133,30 +132,28 @@ h1 {
     justify-content: center;
     align-content: flex-start;
     gap: 6px;
-    overflow-y: hidden; /* Bilgisayar için kaydırma yok */
+    /* Bilgisayar için kaydırma yok, çünkü orijinal kodunuzda bu yoktu ve muhtemelen gerekmiyor */
+    overflow-y: hidden;
   }
 
   .anatolya-box {
     width: calc(50% - 3px);
     height: var(--box-height); /* Orijinal bilgisayar box-height kullanılıyor */
     min-height: 60px;
-    /* Bilgisayar modunda esneklik değişkenlerine gerek yok, flex-grow: 0 varsayılan */
-    flex-grow: 0; /* Küçülmesini engeller, sabit kalır */
+    flex-grow: 0;
   }
 
   .anatolya-label {
     font-size: var(--label-font-size); /* Orijinal bilgisayar label font-size */
     height: 25%;
-    /* Metin taşması yönetimi mobil için bırakıldı, bilgisayarda bu varsayılan olarak daha az sorun yaratır */
-    white-space: normal; /* Normal metin sarımı (wrap) */
-    text-overflow: clip; /* Kısaltmayı kaldır */
+    white-space: normal;
+    text-overflow: clip;
   }
 
   .anatolya-value {
     font-size: var(--value-font-size); /* Orijinal bilgisayar value font-size */
     height: 75%;
-    /* Metin taşması yönetimi mobil için bırakıldı */
-    white-space: normal; /* Normal metin sarımı (wrap) */
-    text-overflow: clip; /* Kısaltmayı kaldır */
+    white-space: normal;
+    text-overflow: clip;
   }
 }
