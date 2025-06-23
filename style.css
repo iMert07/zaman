@@ -60,8 +60,8 @@ h1 {
   gap: var(--gap);
   justify-content: flex-start;
   
-  /* MOBİL İÇİN KAYDIRMA AYARI */
-  overflow-y: auto; /* Mobil için içerik sığmadığında dikey kaydırma çubuğu belirir */
+  /* MOBİL CİHAZLAR İÇİN KAYDIRMA AYARI (GENEL VE YATAY MOD DAHİL) */
+  overflow-y: auto; /* İçerik sığmadığında dikey kaydırma çubuğu belirir */
   overflow-x: hidden; /* Yatay kaydırmayı engeller */
   -webkit-overflow-scrolling: touch; /* iOS cihazlarda daha akıcı kaydırma */
 }
@@ -113,7 +113,9 @@ h1 {
 }
 
 /* --- BİLGİSAYAR EKRANI İÇİN (768px ve üzeri) ORİJİNAL AYARLAR --- */
-@media (min-width: 768px) {
+/* Bu medya sorgusunu sadece pointer tipi "fine" (fare gibi hassas) ve hover yeteneği olan cihazlar için hedefliyoruz. */
+/* Bu, genellikle dokunmatik olmayan bilgisayarları kapsar. */
+@media (min-width: 768px) and (hover: hover) and (pointer: fine) {
   :root {
     /* Bilgisayar görünümü için orijinal kodunuzdaki root değişkenleri */
     --box-height: var(--box-height-desktop);
@@ -133,10 +135,8 @@ h1 {
     justify-content: center;
     align-content: flex-start;
     gap: 6px;
-    /* BİLGİSAYAR İÇİN KAYDIRMA AYARI: */
-    /* Tam ekranda sığdığı için kaydırma çubuğu görünmez kalır. */
-    /* Pencere küçültülürse ve içerik taşarsa, tarayıcının varsayılan kaydırma davranışı devreye girebilir. */
-    overflow-y: hidden; /* Tamamen gizle */
+    /* BİLGİSAYARDA TAM EKRANDA KAYDIRMA ÇUBUĞUNU GİZLE */
+    overflow-y: hidden;
   }
 
   .anatolya-box {
