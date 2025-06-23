@@ -4,12 +4,12 @@
   --box-count: 8;
   --header-height: 18px;
   --padding-vertical: 4px;
-  --gap: 4px;
+  --gap: 2px;
   --total-gap: calc((var(--box-count) - 1) * var(--gap));
   --available-height: calc(100vh - var(--header-height) - var(--padding-vertical) - var(--total-gap));
   --box-height: calc(var(--available-height) / var(--box-count));
-  --value-font-size: calc(var(--box-height) * 0.32);
-  --label-font-size: calc(var(--box-height) * 0.11);
+  --value-font-size: calc(var(--box-height) * 0.36);
+  --label-font-size: calc(var(--box-height) * 0.13);
 }
 
 * {
@@ -51,7 +51,6 @@ h1 {
   gap: var(--gap);
   justify-content: space-between;
   overflow: hidden;
-  padding: 0 2px;
 }
 
 .anatolya-box {
@@ -63,7 +62,7 @@ h1 {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 0 5px;
+  padding: 0 3px;
   flex-shrink: 0;
 }
 
@@ -94,23 +93,11 @@ h1 {
 
 @media (min-width: 768px) {
   :root {
-    --box-count: 4;
-    --header-height: 30px;
-    --padding-vertical: 10px;
-    --gap: 6px;
-    --total-gap: calc((var(--box-count) - 1) * var(--gap));
-    --available-height: calc(100vh - var(--header-height) - var(--padding-vertical) - var(--total-gap));
-    --box-height: calc(var(--available-height) / var(--box-count));
-    --value-font-size: calc(var(--box-height) * 0.4);
-    --label-font-size: calc(var(--box-height) * 0.12);
-  }
-
-  body {
-    padding: 5px;
+    --box-height: calc((100vh - 30px - 20px) / 4);
   }
 
   h1 {
-    height: var(--header-height);
+    height: 30px;
     font-size: 1.2rem;
     margin-bottom: 5px;
   }
@@ -120,15 +107,12 @@ h1 {
     flex-wrap: wrap;
     justify-content: center;
     align-content: flex-start;
-    gap: var(--gap);
-    padding: 0 5px;
+    gap: 6px;
   }
 
   .anatolya-box {
-    width: calc(50% - 4px);
-    height: var(--box-height);
-    min-height: 50px;
-    padding: 0 8px;
+    width: calc(50% - 3px);
+    min-height: 60px;
   }
 
   .anatolya-label {
@@ -140,27 +124,24 @@ h1 {
   }
 }
 
-@media (max-height: 700px) and (orientation: portrait) {
+/* İşte bu kısım mobilde kutuların tam sığması için */
+
+@media (max-width: 767px) {
   :root {
+    --gap: 6px;
+    --padding-vertical: 6px;
     --box-count: 8;
-    --header-height: 18px;
-    --padding-vertical: 4px;
-    --gap: 3px;
-    --total-gap: calc((var(--box-count) - 1) * var(--gap));
-    --available-height: calc(100vh - var(--header-height) - var(--padding-vertical) - var(--total-gap));
+    --available-height: calc(100vh - var(--header-height) - var(--padding-vertical) - ((var(--box-count) - 1) * var(--gap)));
     --box-height: calc(var(--available-height) / var(--box-count));
-    --value-font-size: calc(var(--box-height) * 0.3);
-    --label-font-size: calc(var(--box-height) * 0.1);
+    --value-font-size: calc(var(--box-height) * 0.36);
+    --label-font-size: calc(var(--box-height) * 0.13);
   }
 
-  h1 {
-    height: var(--header-height);
-    font-size: 0.75rem;
-    margin: 1px 0;
+  .anatolya-scroll {
+    gap: var(--gap);
   }
 
   .anatolya-box {
-    min-height: 26px;
-    padding: 0 3px;
+    height: var(--box-height);
   }
 }
