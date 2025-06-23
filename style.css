@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
 :root {
-  --box-height: calc((100vh - 70px) / 8);
+  --box-height: calc((100vh - 72px) / 8); /* Mobilde kutular arası boşluk için 70 yerine 72 yaptık */
   --value-font-size: calc(var(--box-height) * 0.36);
   --label-font-size: calc(var(--box-height) * 0.13);
 }
@@ -40,10 +40,11 @@ h1 {
 
 .anatolya-scroll {
   flex: 1;
-  overflow-y: hidden; /* Kaydırmayı engelledik */
+  overflow-y: hidden;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Boşlukları eşit dağıtır */
+  justify-content: space-between;
+  gap: 1px; /* Mobilde kutular arası boşluk sağlandı */
 }
 
 .anatolya-box {
@@ -86,9 +87,10 @@ h1 {
   white-space: nowrap;
 }
 
+/* Burası masaüstü görünüm */
 @media (min-width: 768px) {
   :root {
-    --box-height: calc((100vh - 30px) / 4 - 4px); /* Burada küçültme yapıldı */
+    --box-height: calc((100vh - 30px) / 4 - 4px);
   }
 
   body {
@@ -106,11 +108,11 @@ h1 {
     flex-wrap: wrap;
     justify-content: center;
     align-content: flex-start;
-    gap: 4px; /* Eskiden 5px’ti, azaltıldı */
+    gap: 4px;
   }
 
   .anatolya-box {
-    width: calc(50% - 2px); /* Eskiden 50% - 3px’ti */
+    width: calc(50% - 2px);
     height: var(--box-height);
     min-height: 60px;
   }
@@ -124,9 +126,10 @@ h1 {
   }
 }
 
+/* Küçük mobil ekranlar için */
 @media (max-height: 700px) and (orientation: portrait) {
   :root {
-    --box-height: calc((100vh - 60px) / 8);
+    --box-height: calc((100vh - 64px) / 8); /* Kutuların toplam yüksekliği azaldı */
     --value-font-size: calc(var(--box-height) * 0.34);
     --label-font-size: calc(var(--box-height) * 0.12);
   }
