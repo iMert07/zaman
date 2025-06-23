@@ -134,9 +134,9 @@ h1 {
     align-content: flex-start;
     gap: 6px;
     /* BİLGİSAYAR İÇİN KAYDIRMA AYARI: */
-    /* İçerik sığmıyorsa otomatik kaydırma çubuğu belirir. */
-    /* Tam ekranda sığdığı için çubuk görünmez. */
-    overflow-y: auto; 
+    /* Tam ekranda sığdığı için kaydırma çubuğu görünmez kalır. */
+    /* Pencere küçültülürse ve içerik taşarsa, tarayıcının varsayılan kaydırma davranışı devreye girebilir. */
+    overflow-y: hidden; /* Tamamen gizle */
   }
 
   .anatolya-box {
